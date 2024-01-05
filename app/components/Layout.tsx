@@ -76,7 +76,7 @@ function SearchAside() {
                 type="search"
               />
               &nbsp;
-              <button type="submit">Search</button>
+              <button type="submit" className='text-primary'>Search</button>
             </div>
           )}
         </PredictiveSearchForm>

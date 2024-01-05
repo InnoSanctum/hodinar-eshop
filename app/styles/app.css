@@ -1,3 +1,10 @@
+@import url('tailwind.css');
+
+body{
+  background:  linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.73)),url("../../public/assets/images/background.jpg");
+  background-size: cover;
+}
+
 :root {
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
@@ -18,7 +25,6 @@ img {
 * --------------------------------------------------
 */
 aside {
-  background: var(--color-light);
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
   height: 100vh;
   max-width: var(--aside-width);
@@ -129,7 +135,6 @@ aside li {
 */
 .header {
   align-items: center;
-  background: #fff;
   display: flex;
   height: var(--header-height);
   padding: 0 1rem;
@@ -177,7 +182,6 @@ aside li {
 * --------------------------------------------------
 */
 .footer {
-  background: var(--color-dark);
   margin-top: auto;
 }
 

@@ -119,7 +119,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body  className='text-secondary'>
         <Layout {...data}>
           <Outlet />
         </Layout>
