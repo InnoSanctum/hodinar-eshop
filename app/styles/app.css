@@ -24,7 +24,7 @@ body {
   overflow: hidden;
   list-style: none;
   padding: 0;
-  z-index: 1;
+  z-index: 0;
   display: block;
 }
 
@@ -276,8 +276,7 @@ aside li {
 }
 
 .cart-summary-aside {
-  background: white;
-  border-top: 1px solid var(--color-dark);
+  border-top: 1px solid var(--color-light);
   bottom: 0;
   padding-top: 0.75rem;
   position: absolute;
