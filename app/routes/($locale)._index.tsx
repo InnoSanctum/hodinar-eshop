@@ -7,7 +7,9 @@ import type {
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import Product from '~/components/Product';
+// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
 import {
   Navigation,
   Pagination,
@@ -16,11 +18,6 @@ import {
   Autoplay,
 } from "swiper/modules";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 import clsx from 'clsx';
 import Button from '~/components/Button';
 
@@ -151,7 +148,7 @@ function RecommendedProducts({
           {({ products }) => (
             <div className="recommended-products-grid">
               {products.nodes.map((product) => (
-                <Product product={product} />
+                <Product product={product} key={product.id}/>
               ))}
             </div>
           )}
