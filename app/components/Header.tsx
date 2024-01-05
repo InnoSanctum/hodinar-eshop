@@ -11,7 +11,7 @@ type Viewport = 'desktop' | 'mobile';
 export function Header({ header, isLoggedIn, cart }: HeaderProps) {
   const { shop, menu } = header;
   return (
-    <header className="header bg-primary text-secondary">
+    <header className="header bg-primary text-secondary z-50 relative">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         <strong>{shop.name}</strong>
       </NavLink>
