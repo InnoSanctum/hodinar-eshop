@@ -95,6 +95,7 @@ export function SearchForm({searchTerm}: {searchTerm: string}) {
         placeholder="Search…"
         ref={inputRef}
         type="search"
+        className='text-primary bg-secondary'
       />
       &nbsp;
       <button type="submit">Search</button>

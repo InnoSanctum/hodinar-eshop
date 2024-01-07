@@ -3,6 +3,50 @@
 /* @import url('swiper/css/navigation.css');
 @import url('swiper/css/pagination.css');
 @import url('swiper/css/scrollbar.css'); */
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Montserrat:ital,wght@0,400;0,500;0,700;1,400&family=Tinos:wght@400;700&display=swap');
+@layer base {
+  html {
+    /* font-family: Ubuntu; */
+    /* font-family: "Gideon Roman"; */
+    font-family: 'Tinos', serif;
+    font-weight: 700;
+  }
+}
+
+h1 {
+  max-width: 32rem;
+  font-size: 3.75rem /* 60px */;
+  line-height: 1;
+  margin-bottom: 2rem;
+  font-family: Abril Fatface, serif;
+}
+
+h1.last\:mb-0:last-child {
+  margin-bottom: 0px;
+}
+
+h2 {
+  margin-bottom: 0.5rem /* 8px */;
+  font-family: Abril Fatface, serif;
+  font-size: 1.875rem /* 30px */;
+  line-height: 2.25rem /* 36px */;
+}
+h3 {
+  margin-bottom: 0.5rem /* 8px */;
+  font-size: 1.25rem /* 20px */;
+  line-height: 1.75rem /* 28px */;
+  font-family: Abril Fatface, serif;
+}
+h4 {
+  margin-bottom: 0.5rem /* 8px */;
+  font-size: 1.125rem /* 18px */;
+  line-height: 1.75rem /* 28px */;
+}
+h5 {
+  margin-bottom: 0.5rem /* 8px */;
+  font-size: 1rem /* 16px */;
+  line-height: 1.5rem /* 24px */;
+}
 
 body {
   background: linear-gradient(
@@ -35,7 +79,10 @@ body {
   z-index: 1;
   display: flex;
   transition-property: transform;
-  transition-timing-function: var(--swiper-wrapper-transition-timing-function,initial);
+  transition-timing-function: var(
+    --swiper-wrapper-transition-timing-function,
+    initial
+  );
   box-sizing: content-box;
 }
 

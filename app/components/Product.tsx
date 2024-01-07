@@ -8,7 +8,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Fade } from "react-awesome-reveal";
 import Button from './Button';
 
-export default function Product({ product }: { product: RecommendedProductFragment }) {
+export default function Product({ product, loading }: {
+    product: RecommendedProductFragment,
+    loading?: 'eager' | 'lazy';
+}) {
     const [isHovered, setHover] = useState<boolean>(false);
     function cutText(text: string, len: number): string {
         if (text.length <= len) return text;
@@ -39,6 +42,7 @@ export default function Product({ product }: { product: RecommendedProductFragme
                                 data={product.images.nodes[0]}
                                 aspectRatio="1/1"
                                 sizes="(min-width: 45em) 20vw, 50vw"
+                                loading={loading}
                             />
                         </div>
                         <div className="absolute top-0 w-full">

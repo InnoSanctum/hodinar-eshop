@@ -71,6 +71,7 @@ function CollectionItem({
           alt={collection.image.altText || collection.title}
           aspectRatio="1/1"
           data={collection.image}
+          className='object-cover'
           loading={index < 3 ? 'eager' : undefined}
         />
       )}

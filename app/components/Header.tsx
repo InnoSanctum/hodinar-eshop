@@ -3,6 +3,11 @@ import { Suspense } from 'react';
 import type { HeaderQuery } from 'storefrontapi.generated';
 import type { LayoutProps } from './Layout';
 import { useRootLoaderData } from '~/root';
+import cart from "../../public/assets/svgs/cart.svg"
+import search from "../../public/assets/svgs/search.svg"
+import user from "../../public/assets/svgs/user.svg"
+import { Image } from '@shopify/hydrogen';
+
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
@@ -10,10 +15,11 @@ type Viewport = 'desktop' | 'mobile';
 
 export function Header({ header, isLoggedIn, cart }: HeaderProps) {
   const { shop, menu } = header;
+  console.log(shop.brand?.logo)
   return (
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-[9999999] relative">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+        <span className='flex items-center gap-4 font-title'><Image src={shop.brand?.logo?.image?.url} sizes='1rem' className='h-8' /><strong className='self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary'>{shop.name}</strong></span>
       </NavLink>
       <HeaderMenu
         menu={menu}
@@ -52,7 +58,7 @@ export function HeaderMenu({
           onClick={closeAside}
           prefetch="intent"
           style={activeLinkStyle}
-          to="/" 
+          to="/"
         >
           Home
         </NavLink>
@@ -93,7 +99,7 @@ function HeaderCtas({
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
       <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        {isLoggedIn ? 'Account' : 'Sign in'}
+        {isLoggedIn ? 'Account' : <img src={user} className='h-4' />}
       </NavLink>
       <SearchToggle />
       <CartToggle cart={cart} />
@@ -110,11 +116,12 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  return <a href="#search-aside">Search</a>;
+  return <a href="#search-aside"><img src={search} className='h-4' /></a>;
 }
 
 function CartBadge({ count }: { count: number }) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  console.log(cart)
+  return <a href="#cart-aside" className='inline-flex gap-2 items-center'><img src={cart} className='h-4' /> {count}</a>;
 }
 
 function CartToggle({ cart }: Pick<HeaderProps, 'cart'>) {

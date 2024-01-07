@@ -8,6 +8,7 @@ import {
 } from '@shopify/hydrogen';
 import type {ProductItemFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/utils';
+import Product from '~/components/Product';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
@@ -66,11 +67,18 @@ function ProductsGrid({products}: {products: ProductItemFragment[]}) {
     <div className="products-grid">
       {products.map((product, index) => {
         return (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
+          <>
+            <Product
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+            {/* <ProductItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            /> */}
+          </>
         );
       })}
     </div>
@@ -119,12 +127,22 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    description
     featuredImage {
       id
       altText
       url
       width
       height
+    }
+    images(first: 2) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
     }
     priceRange {
       minVariantPrice {
@@ -161,7 +179,6 @@ const COLLECTION_QUERY = `#graphql
       id
       handle
       title
-      description
       products(
         first: $first,
         last: $last,

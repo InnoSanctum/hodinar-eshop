@@ -153,7 +153,7 @@ export function ErrorBoundary() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className='text-secondary'>
         <Layout {...rootData}>
           <div className="route-error">
             <h1>Oops</h1>

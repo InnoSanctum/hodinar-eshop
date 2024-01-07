@@ -37,7 +37,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
-    <div className="home">
+    <div className="home flex flex-col gap-16">
       <Hero products={data.recommendedProducts} />
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
@@ -95,7 +95,7 @@ function Hero({
                     <div>
                       <figure className="h-[80vh]">
                         <Image
-                          sizes="(min-width: 45em) 40vw, 50vw"
+                          sizes="(min-width: 45em) 60vw, 50vw"
                           data={product.images.nodes[0]}
                           className="rounded-lg w-full h-full object-cover opacity-30 md:opacity-100"
                         />
