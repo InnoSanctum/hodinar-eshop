@@ -27,8 +27,35 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
 
+import LightGallery from 'lightgallery/react';
+
+// import styles
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-thumbnail.css';
+
+// If you want you can use SCSS instead of css
+// import 'lightgallery/scss/lightgallery.scss';
+// import 'lightgallery/scss/lg-zoom.scss';
+
+// import plugins if you need
+import lgThumbnail from 'lightgallery/plugins/thumbnail';
+import lgZoom from 'lightgallery/plugins/zoom';
+import {useWindowSize} from '@uidotdev/usehooks';
+
+import {Swiper, SwiperSlide} from 'swiper/react';
+import '../styles/swiper.css';
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+} from 'swiper/modules';
+import Button from '~/components/Button';
+
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
+  return [{title: `Ateliér Pryimak | ${data?.product.title ?? ''}`}];
 };
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
@@ -116,9 +143,49 @@ function redirectToFirstVariant({
 export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
+  const size = useWindowSize();
+
   return (
     <div className="product">
-      <ProductImage image={selectedVariant?.image} />
+      {size.width && size.width >= 720 ? (
+        <LightGallery
+          speed={500}
+          plugins={[lgThumbnail, lgZoom]}
+          elementClassNames=" flex flex-col gap-4"
+        >
+          {product.images.nodes.map((image, i) => {
+            return (
+              <a key={i} href={image.url}>
+                <ProductImage image={image} />
+              </a>
+            );
+          })}
+        </LightGallery>
+      ) : (
+        <Swiper
+          modules={[Pagination, Scrollbar, A11y, Autoplay]}
+          spaceBetween={50}
+          slidesPerView={1}
+          className="w-full mb-8"
+          navigation
+          loop
+          speed={1500}
+          autoplay={{delay: 5000}}
+          pagination={{clickable: true}}
+          style={
+            {
+              '--swiper-pagination-color': '#fff',
+              '--swiper-navigation-color': '#fff',
+            } as any
+          }
+        >
+          {product.images.nodes.map((image, i) => (
+            <SwiperSlide key={i}>
+              <ProductImage image={image} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
       <ProductMain
         selectedVariant={selectedVariant}
         product={product}
@@ -139,6 +206,8 @@ function ProductImage({image}: {image: ProductVariantFragment['image']}) {
         aspectRatio="1/1"
         data={image}
         key={image.id}
+        loading="lazy"
+        className="object-cover"
         sizes="(min-width: 45em) 50vw, 100vw"
       />
     </div>
@@ -184,9 +253,9 @@ function ProductMain({
       </Suspense>
       <br />
       <br />
-      <p>
-        <strong>Description</strong>
-      </p>
+      <h4>
+        <strong>Popis</strong>
+      </h4>
       <br />
       <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
       <br />
@@ -254,7 +323,7 @@ function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {selectedVariant?.availableForSale ? 'Přidat do košíku' : 'Vyprodáno'}
       </AddToCartButton>
     </div>
   );
@@ -316,7 +385,7 @@ function AddToCartButton({
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
           >
-            {children}
+            <Button>{children}</Button>
           </button>
         </>
       )}
@@ -332,6 +401,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       currencyCode
     }
     id
+    
     image {
       __typename
       id
@@ -369,6 +439,15 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     descriptionHtml
     description
+    images(first: 20) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
     options {
       name
       values

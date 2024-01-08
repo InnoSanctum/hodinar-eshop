@@ -1,4 +1,5 @@
-import {NavLink} from '@remix-run/react';
+import {Link, NavLink} from '@remix-run/react';
+import { Image } from '@shopify/hydrogen';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
 
@@ -6,12 +7,45 @@ export function Footer({
   menu,
   shop,
 }: FooterQuery & {shop: HeaderQuery['shop']}) {
-  return (
-    <footer className="footer">
+  return (<footer className="rounded-lg shadow bg-secondary/10 p-4 mt-auto">
+  <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+    <div className="flex items-center justify-center sm:justify-between flex-wrap gap-8">
+      <Link
+        to="/"
+        className="flex items-center space-x-3 rtl:space-x-reverse"
+      >
+        <span className="flex items-center gap-4 font-title self-center text-2xl font-semibold whitespace-nowrap text-tertiary">
+        <Image src={shop.brand?.logo?.image?.url} sizes='1rem' className='h-8' />
+          {shop.name}
+        </span>
+      </Link>
       {menu && shop?.primaryDomain?.url && (
         <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
       )}
-    </footer>
+      {menu && shop?.primaryDomain?.url && (
+        <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
+      )}
+      {/* <ul className="flex flex-wrap items-center mb-6 text-sm font-medium sm:mb-0  gap-4">
+        {settings.data.socials.map((item, i) => (
+          <li key={i}>
+            <PrismicNextLink field={item.link}>
+              <PrismicNextImage field={item.icon} className="h-8 w-8 p-2" />
+            </PrismicNextLink>
+          </li>
+        ))}
+      </ul> */}
+    </div>
+    <hr className="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
+    <span className="block text-sm sm:text-center ">
+      © {new Date().getFullYear()}{" "}
+      <Link to="/" className="hover:underline">
+        {shop.name}
+      </Link>
+      . All Rights Reserved.
+    </span>
+  </div>
+</footer>
+    
   );
 }
 

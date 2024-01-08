@@ -9,7 +9,7 @@ import type {
 import Product from '~/components/Product';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper-bundle.css";
+import "../styles/swiper.css";
 import {
   Navigation,
   Pagination,
@@ -56,10 +56,10 @@ function Hero({
         {({ products }) => (
         <Swiper
         
-          modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
+          modules={[ Pagination, Scrollbar, A11y, Autoplay]}
           spaceBetween={50}
           slidesPerView={1}
-          className="w-full"
+          className="w-full bg-primary md:bg-transparent"
           navigation
           loop
           speed={1500}

@@ -15,7 +15,6 @@ type Viewport = 'desktop' | 'mobile';
 
 export function Header({ header, isLoggedIn, cart }: HeaderProps) {
   const { shop, menu } = header;
-  console.log(shop.brand?.logo)
   return (
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-[9999999] relative">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>

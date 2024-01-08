@@ -11,7 +11,7 @@ import {useVariantUrl} from '~/utils';
 import Product from '~/components/Product';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+  return [{title: `ATELIÉR PRYIMAK | ${data?.collection.title ?? ''} Kolekce`}];
 };
 
 export async function loader({request, params, context}: LoaderFunctionArgs) {
