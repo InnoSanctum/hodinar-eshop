@@ -53,6 +53,7 @@ import {
   Autoplay,
 } from 'swiper/modules';
 import Button from '~/components/Button';
+import {RecommendedProducts} from './($locale)._index';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Ateliér Pryimak | ${data?.product.title ?? ''}`}];
@@ -62,6 +63,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {handle} = params;
   const {storefront} = context;
 
+  // .then((e) => console.log(e));
   const selectedOptions = getSelectedProductOptions(request).filter(
     (option) =>
       // Filter out Shopify predictive search query params
@@ -82,11 +84,27 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {product} = await storefront.query(PRODUCT_QUERY, {
     variables: {handle, selectedOptions},
   });
+  console.log(product?.collections.edges.map((e) => e.node.handle));
+  const {collection: recommendedProducts} = await storefront.query(
+    RECOMMENDED_PRODUCTS_QUERY,
+    {
+      variables: {handle: product?.collections.edges[0].node.handle || ''},
+    },
+  );
+  console.log(recommendedProducts);
 
   if (!product?.id) {
     throw new Response(null, {status: 404});
   }
+  const filteredRecommendedProducts =
+    recommendedProducts?.products.nodes.filter(
+      (recommendedProduct) => recommendedProduct.id != product.id,
+    );
 
+  // const recommendedRandomProducts = await storefront.query(
+  //   RECOMMENDED_RANDOM_PRODUCTS_QUERY,
+  //   {variables: {first: 4 - (filteredRecommendedProducts?.length || 0)}},
+  // );
   const firstVariant = product.variants.nodes[0];
   const firstVariantIsDefault = Boolean(
     firstVariant.selectedOptions.find(
@@ -114,7 +132,11 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     variables: {handle},
   });
 
-  return defer({product, variants});
+  return defer({
+    product,
+    variants,
+    recommendedProducts: {products: {nodes: filteredRecommendedProducts}},
+  });
 }
 
 function redirectToFirstVariant({
@@ -141,56 +163,62 @@ function redirectToFirstVariant({
 }
 
 export default function Product() {
-  const {product, variants} = useLoaderData<typeof loader>();
+  const {product, variants, recommendedProducts} =
+    useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   const size = useWindowSize();
-
+  console.log('recommendedProducts', recommendedProducts);
   return (
-    <div className="product">
-      {size.width && size.width >= 720 ? (
-        <LightGallery
-          speed={500}
-          plugins={[lgThumbnail, lgZoom]}
-          elementClassNames=" flex flex-col gap-4"
-        >
-          {product.images.nodes.map((image, i) => {
-            return (
-              <a key={i} href={image.url}>
+    <div className="flex flex-col gap-8">
+      <div className="product">
+        {size.width && size.width >= 720 ? (
+          <LightGallery
+            speed={500}
+            plugins={[lgThumbnail, lgZoom]}
+            elementClassNames=" flex flex-col gap-4"
+          >
+            {product.images.nodes.map((image, i) => {
+              return (
+                <a key={i} href={image.url}>
+                  <ProductImage image={image} />
+                </a>
+              );
+            })}
+          </LightGallery>
+        ) : (
+          <Swiper
+            modules={[Pagination, Scrollbar, A11y, Autoplay]}
+            spaceBetween={50}
+            slidesPerView={1}
+            className="w-full mb-8"
+            navigation
+            loop
+            speed={1500}
+            autoplay={{delay: 5000}}
+            pagination={{clickable: true}}
+            style={
+              {
+                '--swiper-pagination-color': '#fff',
+                '--swiper-navigation-color': '#fff',
+              } as any
+            }
+          >
+            {product.images.nodes.map((image, i) => (
+              <SwiperSlide key={i}>
                 <ProductImage image={image} />
-              </a>
-            );
-          })}
-        </LightGallery>
-      ) : (
-        <Swiper
-          modules={[Pagination, Scrollbar, A11y, Autoplay]}
-          spaceBetween={50}
-          slidesPerView={1}
-          className="w-full mb-8"
-          navigation
-          loop
-          speed={1500}
-          autoplay={{delay: 5000}}
-          pagination={{clickable: true}}
-          style={
-            {
-              '--swiper-pagination-color': '#fff',
-              '--swiper-navigation-color': '#fff',
-            } as any
-          }
-        >
-          {product.images.nodes.map((image, i) => (
-            <SwiperSlide key={i}>
-              <ProductImage image={image} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+        <ProductMain
+          selectedVariant={selectedVariant}
+          product={product}
+          variants={variants}
+        />
+      </div>
+      {recommendedProducts && (
+        <RecommendedProducts products={recommendedProducts} />
       )}
-      <ProductMain
-        selectedVariant={selectedVariant}
-        product={product}
-        variants={variants}
-      />
     </div>
   );
 }
@@ -439,6 +467,14 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     descriptionHtml
     description
+    collections(first: 10){
+      edges{
+        node{
+          title
+          handle
+        }
+      }
+    }
     images(first: 20) {
       nodes {
         id
@@ -502,6 +538,41 @@ const VARIANTS_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...ProductVariants
+    }
+  }
+` as const;
+
+const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+  fragment RecommendedProductCollection on Product {
+    id
+    title
+    description
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    images(first: 2) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
+  }
+
+  query RecommendedProductCollection($country: CountryCode, $language: LanguageCode, $handle: String!)
+    @inContext(country: $country, language: $language) {
+      collection(handle: $handle) {
+      products(first: 4, sortKey: BEST_SELLING, reverse: true) {
+        nodes {
+          ...RecommendedProductCollection
+        }
+      }
     }
   }
 ` as const;

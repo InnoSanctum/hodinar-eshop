@@ -35,6 +35,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
 }
 
 export default function Homepage() {
+  // console.log(useLoca)
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home flex flex-col gap-16">
@@ -135,7 +136,7 @@ function FeaturedCollection({
   );
 }
 
-function RecommendedProducts({
+export function RecommendedProducts({
   products,
 }: {
   products: Promise<RecommendedProductsQuery>;

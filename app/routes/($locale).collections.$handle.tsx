@@ -20,7 +20,7 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
-
+  // console.log('handle', handle);
   if (!handle) {
     return redirect('/collections');
   }
