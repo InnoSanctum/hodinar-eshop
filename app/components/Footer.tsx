@@ -2,6 +2,8 @@ import {Link, NavLink} from '@remix-run/react';
 import { Image } from '@shopify/hydrogen';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
+import VojtikLink from './custom/VojtikLink';
+import useVojtikLink from './custom/useVojtikLink';
 
 export function Footer({
   menu,
@@ -10,15 +12,14 @@ export function Footer({
   return (<footer className="rounded-lg shadow bg-secondary/10 p-4 mt-auto">
   <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
     <div className="flex items-center justify-center sm:justify-between flex-wrap gap-8">
-      <Link
-        to="/"
+      <VojtikLink        to="/"
         className="flex items-center space-x-3 rtl:space-x-reverse"
       >
         <span className="flex items-center gap-4 font-title self-center text-2xl font-semibold whitespace-nowrap text-tertiary">
         <Image src={shop.brand?.logo?.image?.url} sizes='1rem' className='h-8' />
           {shop.name}
         </span>
-      </Link>
+      </VojtikLink>
       {menu && shop?.primaryDomain?.url && (
         <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
       )}
@@ -38,9 +39,9 @@ export function Footer({
     <hr className="my-6 border-gray-200 sm:mx-auto  lg:my-8" />
     <span className="block text-sm sm:text-center ">
       © {new Date().getFullYear()}{" "}
-      <Link to="/" className="hover:underline">
+      <VojtikLink to="/" className="hover:underline">
         {shop.name}
-      </Link>
+      </VojtikLink>
       . All Rights Reserved.
     </span>
   </div>
@@ -80,7 +81,7 @@ function FooterMenu({
             key={item.id}
             prefetch="intent"
             style={activeLinkStyle}
-            to={url}
+            to={useVojtikLink(url)}
           >
             {item.title}
           </NavLink>

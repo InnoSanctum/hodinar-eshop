@@ -9,6 +9,7 @@ import {
 import type {ProductItemFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/utils';
 import Product from '~/components/Product';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `ATELIÉR PRYIMAK | ${data?.collection.title ?? ''} Kolekce`}];
@@ -95,8 +96,7 @@ function ProductItem({
   const variant = product.variants.nodes[0];
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
   return (
-    <Link
-      className="product-item"
+    <VojtikLink      className="product-item"
       key={product.id}
       prefetch="intent"
       to={variantUrl}
@@ -114,7 +114,7 @@ function ProductItem({
       <small>
         <Money data={product.priceRange.minVariantPrice} />
       </small>
-    </Link>
+    </VojtikLink>
   );
 }
 

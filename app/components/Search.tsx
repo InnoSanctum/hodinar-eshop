@@ -15,6 +15,7 @@ import type {
   PredictiveArticleFragment,
   SearchQuery,
 } from 'storefrontapi.generated';
+import VojtikLink from './custom/VojtikLink';
 
 type PredicticeSearchResultItemImage =
   | PredictiveCollectionFragment['image']
@@ -157,9 +158,9 @@ function SearchResultsProductsGrid({products}: Pick<SearchQuery, 'products'>) {
         {({nodes, isLoading, NextLink, PreviousLink}) => {
           const itemsMarkup = nodes.map((product) => (
             <div className="search-results-item" key={product.id}>
-              <Link prefetch="intent" to={`/products/${product.handle}`}>
+              <VojtikLink prefetch="intent" to={`/products/${product.handle}`}>
                 <span>{product.title}</span>
-              </Link>
+              </VojtikLink>
             </div>
           ));
           return (
@@ -194,9 +195,9 @@ function SearchResultPageGrid({pages}: Pick<SearchQuery, 'pages'>) {
       <div>
         {pages?.nodes?.map((page) => (
           <div className="search-results-item" key={page.id}>
-            <Link prefetch="intent" to={`/pages/${page.handle}`}>
+            <VojtikLink prefetch="intent" to={`/pages/${page.handle}`}>
               {page.title}
-            </Link>
+            </VojtikLink>
           </div>
         ))}
       </div>
@@ -212,9 +213,9 @@ function SearchResultArticleGrid({articles}: Pick<SearchQuery, 'articles'>) {
       <div>
         {articles?.nodes?.map((article) => (
           <div className="search-results-item" key={article.id}>
-            <Link prefetch="intent" to={`/blog/${article.handle}`}>
+            <VojtikLink prefetch="intent" to={`/blog/${article.handle}`}>
               {article.title}
-            </Link>
+            </VojtikLink>
           </div>
         ))}
       </div>
@@ -321,12 +322,12 @@ export function PredictiveSearchResults() {
       </div>
       {/* view all results /search?q=term */}
       {searchTerm.current && (
-        <Link onClick={goToSearchResult} to={`/search?q=${searchTerm.current}`}>
+        <VojtikLink onClick={goToSearchResult} to={`/search?q=${searchTerm.current}`}>
           <p>
             View all results for <q>{searchTerm.current}</q>
             &nbsp; →
           </p>
-        </Link>
+        </VojtikLink>
       )}
     </div>
   );
@@ -367,9 +368,9 @@ function PredictiveSearchResult({
 
   return (
     <div className="predictive-search-result" key={type}>
-      <Link prefetch="intent" to={categoryUrl} onClick={goToSearchResult}>
+      <VojtikLink prefetch="intent" to={categoryUrl} onClick={goToSearchResult}>
         <h5>{isSuggestions ? 'Suggestions' : type}</h5>
-      </Link>
+      </VojtikLink>
       <ul>
         {items.map((item: NormalizedPredictiveSearchResultItem) => (
           <SearchResultItem
@@ -390,7 +391,7 @@ type SearchResultItemProps = Pick<SearchResultTypeProps, 'goToSearchResult'> & {
 function SearchResultItem({goToSearchResult, item}: SearchResultItemProps) {
   return (
     <li className="predictive-search-result-item" key={item.id}>
-      <Link onClick={goToSearchResult} to={item.url}>
+      <VojtikLink onClick={goToSearchResult} to={item.url}>
         {item.image?.url && (
           <Image
             alt={item.image.altText ?? ''}
@@ -415,7 +416,7 @@ function SearchResultItem({goToSearchResult, item}: SearchResultItemProps) {
             </small>
           )}
         </div>
-      </Link>
+      </VojtikLink>
     </li>
   );
 }

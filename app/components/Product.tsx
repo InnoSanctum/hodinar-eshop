@@ -7,6 +7,7 @@ import type {
 import { AnimatePresence, motion } from "framer-motion";
 import { Fade } from "react-awesome-reveal";
 import Button from './Button';
+import VojtikLink from './custom/VojtikLink';
 
 export default function Product({ product, loading }: {
     product: RecommendedProductFragment,
@@ -73,13 +74,12 @@ export default function Product({ product, loading }: {
                         ></div>
                     </div>
                     <div className="px-5 pb-5">
-                        <Link
-                            key={product.id}
+                        <VojtikLink                            key={product.id}
                             className="recommended-product"
                             to={`/products/${product.handle}`}
                         >
                             <h4>{product.title}</h4>
-                        </Link>
+                        </VojtikLink>
                         <p className="mb-4 font-thin ">
                             {cutText(product.description, 100)}
                         </p>
@@ -87,21 +87,19 @@ export default function Product({ product, loading }: {
                             <Money data={product.priceRange.minVariantPrice} />
                         </div>
 
-                        <Link
-                            key={product.id}
+                        <VojtikLink                            key={product.id}
                             className="recommended-product"
                             to={`/products/${product.handle}`}
                         >
                             <Button>Více</Button>
-                        </Link>
+                        </VojtikLink>
                     </div>
                 </div>
             </div>
         </AnimatePresence>
     );
     return (
-        <Link
-            key={product.id}
+        <VojtikLink            key={product.id}
             className="recommended-product"
             to={`/products/${product.handle}`}
         >
@@ -114,6 +112,6 @@ export default function Product({ product, loading }: {
             <small>
                 <Money data={product.priceRange.minVariantPrice} />
             </small>
-        </Link>
+        </VojtikLink>
     )
 }

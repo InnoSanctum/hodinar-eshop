@@ -2,6 +2,7 @@ import {json, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Money, Image, flattenConnection} from '@shopify/hydrogen';
 import type {OrderLineItemFullFragment} from 'storefrontapi.generated';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Order ${data?.order?.name}`}];
@@ -168,13 +169,13 @@ function OrderLineRow({lineItem}: {lineItem: OrderLineItemFullFragment}) {
     <tr key={lineItem.variant!.id}>
       <td>
         <div>
-          <Link to={`/products/${lineItem.variant!.product!.handle}`}>
+          <VojtikLink to={`/products/${lineItem.variant!.product!.handle}`}>
             {lineItem?.variant?.image && (
               <div>
                 <Image data={lineItem.variant.image} width={96} height={96} />
               </div>
             )}
-          </Link>
+          </VojtikLink>
           <div>
             <p>{lineItem.title}</p>
             <small>{lineItem.variant!.title}</small>

@@ -6,6 +6,7 @@ import {
 } from '@shopify/remix-oxygen';
 import {Form, Link, useActionData} from '@remix-run/react';
 import type {CustomerCreateMutation} from 'storefrontapi.generated';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 type ActionResponse = {
   error: string | null;
@@ -159,7 +160,7 @@ export default function Register() {
       </Form>
       <br />
       <p>
-        <Link to="/account/login">Login →</Link>
+        <VojtikLink to="/account/login">Login →</VojtikLink>
       </p>
     </div>
   );

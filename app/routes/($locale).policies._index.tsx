@@ -1,5 +1,6 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, Link} from '@remix-run/react';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export async function loader({context}: LoaderFunctionArgs) {
   const data = await context.storefront.query(POLICIES_QUERY);
@@ -23,7 +24,7 @@ export default function Policies() {
           if (!policy) return null;
           return (
             <fieldset key={policy.id}>
-              <Link to={`/policies/${policy.handle}`}>{policy.title}</Link>
+              <VojtikLink to={`/policies/${policy.handle}`}>{policy.title}</VojtikLink>
             </fieldset>
           );
         })}

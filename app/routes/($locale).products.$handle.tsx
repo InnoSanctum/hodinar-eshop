@@ -54,6 +54,7 @@ import {
 } from 'swiper/modules';
 import Button from '~/components/Button';
 import {RecommendedProducts} from './($locale)._index';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Ateliér Pryimak | ${data?.product.title ?? ''}`}];
@@ -62,8 +63,6 @@ export const meta: MetaFunction<typeof loader> = ({data}) => {
 export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {handle} = params;
   const {storefront} = context;
-
-  // .then((e) => console.log(e));
   const selectedOptions = getSelectedProductOptions(request).filter(
     (option) =>
       // Filter out Shopify predictive search query params
@@ -84,14 +83,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {product} = await storefront.query(PRODUCT_QUERY, {
     variables: {handle, selectedOptions},
   });
-  console.log(product?.collections.edges.map((e) => e.node.handle));
   const {collection: recommendedProducts} = await storefront.query(
     RECOMMENDED_PRODUCTS_QUERY,
     {
       variables: {handle: product?.collections.edges[0].node.handle || ''},
     },
   );
-  console.log(recommendedProducts);
 
   if (!product?.id) {
     throw new Response(null, {status: 404});
@@ -167,7 +164,6 @@ export default function Product() {
     useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   const size = useWindowSize();
-  console.log('recommendedProducts', recommendedProducts);
   return (
     <div className="flex flex-col gap-8">
       <div className="product">
@@ -216,9 +212,9 @@ export default function Product() {
           variants={variants}
         />
       </div>
-      {recommendedProducts && (
+      {recommendedProducts.products.nodes?.length ? (
         <RecommendedProducts products={recommendedProducts} />
-      )}
+      ) : null}
     </div>
   );
 }
@@ -364,8 +360,7 @@ function ProductOptions({option}: {option: VariantOption}) {
       <div className="product-options-grid">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
-            <Link
-              className="product-options-item"
+            <VojtikLink              className="product-options-item"
               key={option.name + value}
               prefetch="intent"
               preventScrollReset
@@ -377,7 +372,7 @@ function ProductOptions({option}: {option: VariantOption}) {
               }}
             >
               {value}
-            </Link>
+            </VojtikLink>
           );
         })}
       </div>

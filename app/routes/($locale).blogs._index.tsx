@@ -1,6 +1,7 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Pagination, getPaginationVariables} from '@shopify/hydrogen';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export const meta: MetaFunction = () => {
   return [{title: `ATELIÉR PRYIMAK | Blog`}];
@@ -39,14 +40,13 @@ export default function Blogs() {
                 </PreviousLink>
                 {nodes.map((blog) => {
                   return (
-                    <Link
-                      className="blog"
+                    <VojtikLink                      className="blog"
                       key={blog.handle}
                       prefetch="intent"
                       to={`/blogs/${blog.handle}`}
                     >
                       <h2>{blog.title}</h2>
-                    </Link>
+                    </VojtikLink>
                   );
                 })}
                 <NextLink>

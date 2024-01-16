@@ -2,6 +2,7 @@ import {useLoaderData, Link} from '@remix-run/react';
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Pagination, getPaginationVariables, Image} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export async function loader({context, request}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
@@ -60,8 +61,7 @@ function CollectionItem({
   index: number;
 }) {
   return (
-    <Link
-      className="collection-item"
+    <VojtikLink      className="collection-item"
       key={collection.id}
       to={`/collections/${collection.handle}`}
       prefetch="intent"
@@ -76,7 +76,7 @@ function CollectionItem({
         />
       )}
       <h5>{collection.title}</h5>
-    </Link>
+    </VojtikLink>
   );
 }
 

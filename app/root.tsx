@@ -22,7 +22,8 @@ import favicon from '../public/favicon.svg';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
-import { cssBundleHref } from "@remix-run/css-bundle";
+import {cssBundleHref} from '@remix-run/css-bundle';
+import {VojtikContext} from './components/custom/VojtikContext';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -47,7 +48,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export function links() {
   return [
-    {rel: 'stylesheet', href: cssBundleHref },
+    {rel: 'stylesheet', href: cssBundleHref},
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},
     {
@@ -71,7 +72,7 @@ export async function loader({context}: LoaderFunctionArgs) {
   const {storefront, session, cart} = context;
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
-
+  const language = storefront.i18n;
   // validate the customer access token is valid
   const {isLoggedIn, headers} = await validateCustomerAccessToken(
     session,
@@ -103,6 +104,7 @@ export async function loader({context}: LoaderFunctionArgs) {
       footer: footerPromise,
       header: await headerPromise,
       isLoggedIn,
+      language,
       publicStoreDomain,
     },
     {headers},
@@ -121,14 +123,16 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body  className='text-secondary'>
-        <Layout {...data}>
-          <Outlet />
-        </Layout>
-        <ScrollRestoration nonce={nonce} />
-        <Scripts nonce={nonce} />
-        <LiveReload nonce={nonce} />
-      </body>
+      <VojtikContext.Provider value={{language: data.language}}>
+        <body className="text-secondary">
+          <Layout {...data}>
+            <Outlet />
+          </Layout>
+          <ScrollRestoration nonce={nonce} />
+          <Scripts nonce={nonce} />
+          <LiveReload nonce={nonce} />
+        </body>
+      </VojtikContext.Provider>
     </html>
   );
 }
@@ -155,7 +159,7 @@ export function ErrorBoundary() {
         <Meta />
         <Links />
       </head>
-      <body className='text-secondary'>
+      <body className="text-secondary">
         <Layout {...rootData}>
           <div className="route-error">
             <h1>Oops</h1>

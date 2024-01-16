@@ -5,6 +5,7 @@ import type {
   CustomerOrdersFragment,
   OrderItemFragment,
 } from 'storefrontapi.generated';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Orders'}];
@@ -94,7 +95,7 @@ function EmptyOrders() {
       <p>You haven&apos;t placed any orders yet.</p>
       <br />
       <p>
-        <Link to="/collections">Start Shopping →</Link>
+        <VojtikLink to="/collections">Start Shopping →</VojtikLink>
       </p>
     </div>
   );
@@ -104,14 +105,14 @@ function OrderItem({order}: {order: OrderItemFragment}) {
   return (
     <>
       <fieldset>
-        <Link to={`/account/orders/${order.id}`}>
+        <VojtikLink to={`/account/orders/${order.id}`}>
           <strong>#{order.orderNumber}</strong>
-        </Link>
+        </VojtikLink>
         <p>{new Date(order.processedAt).toDateString()}</p>
         <p>{order.financialStatus}</p>
         <p>{order.fulfillmentStatus}</p>
         <Money data={order.currentTotalPrice} />
-        <Link to={`/account/orders/${btoa(order.id)}`}>View Order →</Link>
+        <VojtikLink to={`/account/orders/${btoa(order.id)}`}>View Order →</VojtikLink>
       </fieldset>
       <br />
     </>

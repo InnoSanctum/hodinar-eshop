@@ -5,6 +5,7 @@ import {
   type LoaderFunctionArgs,
 } from '@shopify/remix-oxygen';
 import {Form, Link, useActionData, type MetaFunction} from '@remix-run/react';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 type ActionResponse = {
   error: string | null;
@@ -114,10 +115,10 @@ export default function Login() {
       <br />
       <div>
         <p>
-          <Link to="/account/recover">Forgot password →</Link>
+          <VojtikLink to="/account/recover">Forgot password →</VojtikLink>
         </p>
         <p>
-          <Link to="/account/register">Register →</Link>
+          <VojtikLink to="/account/register">Register →</VojtikLink>
         </p>
       </div>
     </div>

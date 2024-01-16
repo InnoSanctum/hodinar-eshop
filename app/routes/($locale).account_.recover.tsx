@@ -5,6 +5,7 @@ import {
   type ActionFunctionArgs,
 } from '@shopify/remix-oxygen';
 import {Form, Link, useActionData} from '@remix-run/react';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 type ActionResponse = {
   error?: string;
@@ -62,7 +63,7 @@ export default function Recover() {
               minutes.
             </p>
             <br />
-            <Link to="/account/login">Return to Login</Link>
+            <VojtikLink to="/account/login">Return to Login</VojtikLink>
           </>
         ) : (
           <>
@@ -101,7 +102,7 @@ export default function Recover() {
             <div>
               <br />
               <p>
-                <Link to="/account/login">Login →</Link>
+                <VojtikLink to="/account/login">Login →</VojtikLink>
               </p>
             </div>
           </>

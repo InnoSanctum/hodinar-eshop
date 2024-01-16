@@ -1,37 +1,39 @@
-import { defer, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { Await, useLoaderData, Link, type MetaFunction } from '@remix-run/react';
-import { Suspense } from 'react';
-import { Image, Money } from '@shopify/hydrogen';
+import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {Await, useLoaderData, Link, type MetaFunction} from '@remix-run/react';
+import {Suspense} from 'react';
+import {Image, Money} from '@shopify/hydrogen';
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import Product from '~/components/Product';
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-import "../styles/swiper.css";
+import {Swiper, SwiperSlide} from 'swiper/react';
+import '../styles/swiper.css';
 import {
   Navigation,
   Pagination,
   Scrollbar,
   A11y,
   Autoplay,
-} from "swiper/modules";
+} from 'swiper/modules';
 
 import clsx from 'clsx';
 import Button from '~/components/Button';
+import VojtikLink from "../components/custom/VojtikLink"
 
 export const meta: MetaFunction = () => {
-  return [{ title: 'ATELIÉR PRYIMAK' }];
+  return [{title: 'ATELIÉR PRYIMAK'}];
 };
 
-export async function loader({ context }: LoaderFunctionArgs) {
-  const { storefront } = context;
-  const { collections } = await storefront.query(FEATURED_COLLECTION_QUERY);
+export async function loader({context}: LoaderFunctionArgs) {
+  const {storefront} = context;
+  console.log(storefront.i18n);
+  const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
   const featuredCollection = collections.nodes[0];
   const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
 
-  return defer({ featuredCollection, recommendedProducts });
+  return defer({featuredCollection, recommendedProducts});
 }
 
 export default function Homepage() {
@@ -46,72 +48,69 @@ export default function Homepage() {
   );
 }
 
-function Hero({
-  products,
-}: {
-  products: Promise<RecommendedProductsQuery>;
-}) {
-  return <div>
-    <Suspense fallback={<div>Loading...</div>}>
-      <Await resolve={products}>
-        {({ products }) => (
-        <Swiper
-        
-          modules={[ Pagination, Scrollbar, A11y, Autoplay]}
-          spaceBetween={50}
-          slidesPerView={1}
-          className="w-full bg-primary md:bg-transparent"
-          navigation
-          loop
-          speed={1500}
-          autoplay={{ delay: 5000 }}
-          pagination={{ clickable: true }}
-          style={
-            {
-              "--swiper-pagination-color": "#fff",
-              "--swiper-navigation-color": "#fff",
-            } as any
-          }
-        >
-
-            {products.nodes.map((product) => (
-              <SwiperSlide key={product.id}>
-                <div className="xl:w-3/4 m-auto">
-                  <article className="md:grid grid-cols-2 gap-4 md:gap-8 lg:gap-16 h-[80vh] relative">
-                    <div className="z-10 md:z-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:static flex flex-col justify-center items-end gap-8">
-                      <span
-                        className={clsx(
-                          "max-w-lg text-end relative pb-4",
-                          "after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-secondary after:left-0 after:rounded-sm after:bottom-0"
-                        )}
-                      >
-                        <h4>{product.title}</h4>
-                      </span>
-                      <Link key={product.id}
-                        className="recommended-product"
-                        to={`/products/${product.handle}`}>
-                        <Button>{"Více"}</Button>
-                      </Link>
-                    </div>
-                    <div>
-                      <figure className="h-[80vh]">
-                        <Image
-                          sizes="(min-width: 45em) 60vw, 50vw"
-                          data={product.images.nodes[0]}
-                          className="rounded-lg w-full h-full object-cover opacity-30 md:opacity-100"
-                        />
-                      </figure>
-                    </div>
-                  </article>
-                </div>
-              </SwiperSlide>
-            ))}
-        </Swiper>)}
-
-      </Await>
-    </Suspense>
-
-  </div>
+function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Await resolve={products}>
+          {({products}) => (
+            <Swiper
+              modules={[Pagination, Scrollbar, A11y, Autoplay]}
+              spaceBetween={50}
+              slidesPerView={1}
+              className="w-full bg-primary md:bg-transparent"
+              navigation
+              loop
+              speed={1500}
+              autoplay={{delay: 5000}}
+              pagination={{clickable: true}}
+              style={
+                {
+                  '--swiper-pagination-color': '#fff',
+                  '--swiper-navigation-color': '#fff',
+                } as any
+              }
+            >
+              {products.nodes.map((product) => (
+                <SwiperSlide key={product.id}>
+                  <div className="xl:w-3/4 m-auto">
+                    <article className="md:grid grid-cols-2 gap-4 md:gap-8 lg:gap-16 h-[80vh] relative">
+                      <div className="z-10 md:z-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:static flex flex-col justify-center items-end gap-8">
+                        <span
+                          className={clsx(
+                            'max-w-lg text-end relative pb-4',
+                            "after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-secondary after:left-0 after:rounded-sm after:bottom-0",
+                          )}
+                        >
+                          <h4>{product.title}</h4>
+                        </span>
+                        <VojtikLink
+                          key={product.id}
+                          className="recommended-product"
+                          to={`/products/${product.handle}`}
+                        >
+                          <Button>{'Více'}</Button>
+                        </VojtikLink>
+                      </div>
+                      <div>
+                        <figure className="h-[80vh]">
+                          <Image
+                            sizes="(min-width: 45em) 60vw, 50vw"
+                            data={product.images.nodes[0]}
+                            className="rounded-lg w-full h-full object-cover opacity-30 md:opacity-100"
+                          />
+                        </figure>
+                      </div>
+                    </article>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+        </Await>
+      </Suspense>
+    </div>
+  );
 }
 
 function FeaturedCollection({
@@ -122,8 +121,7 @@ function FeaturedCollection({
   if (!collection) return null;
   const image = collection?.image;
   return (
-    <Link
-      className="featured-collection"
+    <VojtikLink      className="featured-collection"
       to={`/collections/${collection.handle}`}
     >
       {image && (
@@ -132,7 +130,7 @@ function FeaturedCollection({
         </div>
       )}
       <h1>{collection.title}</h1>
-    </Link>
+    </VojtikLink>
   );
 }
 
@@ -146,10 +144,10 @@ export function RecommendedProducts({
       <h2>Doporučené produkty</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
-          {({ products }) => (
+          {({products}) => (
             <div className="flex flex-wrap gap-8 justify-center">
               {products.nodes.map((product) => (
-                <Product product={product} key={product.id}/>
+                <Product product={product} key={product.id} />
               ))}
             </div>
           )}

@@ -3,6 +3,7 @@ import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import {Link} from '@remix-run/react';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/utils';
+import VojtikLink from './custom/VojtikLink';
 
 type CartLine = CartApiQueryFragment['lines']['nodes'][0];
 
@@ -87,8 +88,7 @@ function CartLineItem({
       )}
 
       <div>
-        <Link
-          prefetch="intent"
+        <VojtikLink          prefetch="intent"
           to={lineItemUrl}
           onClick={() => {
             if (layout === 'aside') {
@@ -100,7 +100,7 @@ function CartLineItem({
           <p>
             <strong>{product.title}</strong>
           </p>
-        </Link>
+        </VojtikLink>
         <CartLinePrice line={line} as="span" />
         <ul>
           {selectedOptions.map((option) => (
@@ -249,8 +249,7 @@ export function CartEmpty({
         started!
       </p>
       <br />
-      <Link
-        to="/collections"
+      <VojtikLink        to="/collections"
         onClick={() => {
           if (layout === 'aside') {
             window.location.href = '/collections';
@@ -258,7 +257,7 @@ export function CartEmpty({
         }}
       >
         Continue shopping →
-      </Link>
+      </VojtikLink>
     </div>
   );
 }

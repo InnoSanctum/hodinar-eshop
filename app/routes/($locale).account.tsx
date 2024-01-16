@@ -1,6 +1,7 @@
 import {Form, NavLink, Outlet, useLoaderData} from '@remix-run/react';
 import {json, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import type {CustomerFragment} from 'storefrontapi.generated';
+import useVojtikLink from '~/components/custom/useVojtikLink';
 
 export function shouldRevalidate() {
   return true;
@@ -131,15 +132,15 @@ function AccountMenu() {
 
   return (
     <nav role="navigation">
-      <NavLink to="/account/orders" style={isActiveStyle}>
+      <NavLink to={useVojtikLink("/account/orders")} style={isActiveStyle}>
         Orders &nbsp;
       </NavLink>
       &nbsp;|&nbsp;
-      <NavLink to="/account/profile" style={isActiveStyle}>
+      <NavLink to={useVojtikLink("/account/profile")} style={isActiveStyle}>
         &nbsp; Profile &nbsp;
       </NavLink>
       &nbsp;|&nbsp;
-      <NavLink to="/account/addresses" style={isActiveStyle}>
+      <NavLink to={useVojtikLink("/account/addresses")} style={isActiveStyle}>
         &nbsp; Addresses &nbsp;
       </NavLink>
       &nbsp;|&nbsp;

@@ -1,6 +1,7 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {type Shop} from '@shopify/hydrogen/storefront-api-types';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -49,7 +50,7 @@ export default function Policy() {
       <br />
       <br />
       <div>
-        <Link to="/policies">← Back to Policies</Link>
+        <VojtikLink to="/policies">← Back to Policies</VojtikLink>
       </div>
       <br />
       <h1>{policy.title}</h1>

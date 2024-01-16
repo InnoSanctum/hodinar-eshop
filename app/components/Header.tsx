@@ -7,6 +7,7 @@ import cart from "../../public/assets/svgs/cart.svg"
 import search from "../../public/assets/svgs/search.svg"
 import user from "../../public/assets/svgs/user.svg"
 import { Image } from '@shopify/hydrogen';
+import useVojtikLink from './custom/useVojtikLink';
 
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
@@ -17,7 +18,7 @@ export function Header({ header, isLoggedIn, cart }: HeaderProps) {
   const { shop, menu } = header;
   return (
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-10 relative">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+      <NavLink prefetch="intent" to={useVojtikLink("/")} style={activeLinkStyle} end>
         <span className='flex items-center gap-4 font-title'><Image src={shop.brand?.logo?.image?.url} sizes='1rem' className='h-8' /><strong className='self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary'>{shop.name}</strong></span>
       </NavLink>
       <HeaderMenu
@@ -57,7 +58,7 @@ export function HeaderMenu({
           onClick={closeAside}
           prefetch="intent"
           style={activeLinkStyle}
-          to="/"
+          to={useVojtikLink("/")}
         >
           Home
         </NavLink>
@@ -80,7 +81,7 @@ export function HeaderMenu({
             onClick={closeAside}
             prefetch="intent"
             style={activeLinkStyle}
-            to={url}
+            to={useVojtikLink(url)}
           >
             {item.title}
           </NavLink>
@@ -97,7 +98,7 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      <NavLink prefetch="intent" to={useVojtikLink("/account")} style={activeLinkStyle}>
         {isLoggedIn ? 'Account' : <img src={user} className='h-4' />}
       </NavLink>
       <SearchToggle />
@@ -119,7 +120,7 @@ function SearchToggle() {
 }
 
 function CartBadge({ count }: { count: number }) {
-  console.log(cart)
+  // console.log(cart)
   return <a href="#cart-aside" className='inline-flex gap-2 items-center'><img src={cart} className='h-4' /> {count}</a>;
 }
 

@@ -2,6 +2,7 @@ import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Image, Pagination, getPaginationVariables} from '@shopify/hydrogen';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
+import VojtikLink from '~/components/custom/VojtikLink';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `ATELIÉR PRYIMAK | ${data?.blog.title ?? ''} blog`}];
@@ -84,7 +85,7 @@ function ArticleItem({
   }).format(new Date(article.publishedAt!));
   return (
     <div className="blog-article" key={article.id}>
-      <Link to={`/blogs/${article.blog.handle}/${article.handle}`}>
+      <VojtikLink to={`/blogs/${article.blog.handle}/${article.handle}`}>
         {article.image && (
           <div className="blog-article-image">
             <Image
@@ -98,7 +99,7 @@ function ArticleItem({
         )}
         <h3>{article.title}</h3>
         <small>{publishedAt}</small>
-      </Link>
+      </VojtikLink>
     </div>
   );
 }
