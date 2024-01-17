@@ -25,7 +25,7 @@ import type {
   CartLineInput,
   SelectedOption,
 } from '@shopify/hydrogen/storefront-api-types';
-import {getVariantUrl} from '~/utils';
+import {getVariantUrl, useLanguage} from '~/utils';
 
 import LightGallery from 'lightgallery/react';
 
@@ -86,7 +86,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {collection: recommendedProducts} = await storefront.query(
     RECOMMENDED_PRODUCTS_QUERY,
     {
-      variables: {handle: product?.collections.edges[0].node.handle || ''},
+      variables: {handle: product?.collections.edges[0]?.node.handle || ''},
     },
   );
 
@@ -212,7 +212,7 @@ export default function Product() {
           variants={variants}
         />
       </div>
-      {recommendedProducts.products.nodes?.length ? (
+      {recommendedProducts?.products?.nodes?.length ? (
         <RecommendedProducts products={recommendedProducts} />
       ) : null}
     </div>
@@ -321,6 +321,7 @@ function ProductForm({
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
+  const language =useLanguage()
   return (
     <div className="product-form">
       <VariantSelector
@@ -347,7 +348,7 @@ function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Přidat do košíku' : 'Vyprodáno'}
+        {selectedVariant?.availableForSale ? "language.buttons.basket" : "language.buttons.sold"}
       </AddToCartButton>
     </div>
   );
@@ -360,7 +361,8 @@ function ProductOptions({option}: {option: VariantOption}) {
       <div className="product-options-grid">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
-            <VojtikLink              className="product-options-item"
+            <VojtikLink
+              className="product-options-item"
               key={option.name + value}
               prefetch="intent"
               preventScrollReset

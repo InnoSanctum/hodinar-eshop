@@ -1,32 +1,89 @@
-import { Await, NavLink } from '@remix-run/react';
-import { Suspense } from 'react';
-import type { HeaderQuery } from 'storefrontapi.generated';
-import type { LayoutProps } from './Layout';
-import { useRootLoaderData } from '~/root';
-import cart from "../../public/assets/svgs/cart.svg"
-import search from "../../public/assets/svgs/search.svg"
-import user from "../../public/assets/svgs/user.svg"
-import { Image } from '@shopify/hydrogen';
+import {Await, NavLink} from '@remix-run/react';
+import {Suspense, useContext} from 'react';
+import type {HeaderQuery} from 'storefrontapi.generated';
+import type {LayoutProps} from './Layout';
+import {useRootLoaderData} from '~/root';
+import cart from '../../public/assets/svgs/cart.svg';
+import search from '../../public/assets/svgs/search.svg';
+import user from '../../public/assets/svgs/user.svg';
+import {Image} from '@shopify/hydrogen';
 import useVojtikLink from './custom/useVojtikLink';
-
+import {VojtikContext} from './custom/VojtikContext';
+// import '/node_modules/flag-icons/css/flag-icons.min.css';
+// import "../styles/flags.css";
+import CS from '../../public/assets/flags/4x3/cz.svg';
+import EN from '../../public/assets/flags/4x3/us.svg';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
 type Viewport = 'desktop' | 'mobile';
 
-export function Header({ header, isLoggedIn, cart }: HeaderProps) {
-  const { shop, menu } = header;
+export const languages: I18nLocale[] = [
+  {
+    country: 'CZ',
+    language: 'CS',
+    pathPrefix: '/',
+  },
+  {
+    country: 'US',
+    language: 'EN',
+    pathPrefix: 'EN-US',
+  },
+];
+
+function LanguagesList({
+  languages,
+  activeLanguage,
+}: {
+  languages: I18nLocale[];
+  activeLanguage: I18nLocale;
+}) {
+  const flags = {CS, EN};
   return (
-    <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-10 relative">
-      <NavLink prefetch="intent" to={useVojtikLink("/")} style={activeLinkStyle} end>
-        <span className='flex items-center gap-4 font-title'><Image src={shop.brand?.logo?.image?.url} sizes='1rem' className='h-8' /><strong className='self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary'>{shop.name}</strong></span>
+    <div className="flex gap-4 flex-wrap">
+      {languages.map((language) => {
+        if (language.language === activeLanguage.language) return null;
+        return (
+          <a
+            className="hover:underline"
+            key={language.pathPrefix}
+            href={language.pathPrefix}
+          >
+            <img className="h-4" src={flags[language.language]} />
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+export function Header({header, isLoggedIn, cart}: HeaderProps) {
+  const {shop, menu} = header;
+
+  return (
+    <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-20 relative">
+      <NavLink
+        prefetch="intent"
+        to={useVojtikLink('/')}
+        style={activeLinkStyle}
+        end
+      >
+        <span className="flex items-center gap-4 font-title">
+          <Image
+            src={shop.brand?.logo?.image?.url}
+            sizes="1rem"
+            className="h-8"
+          />
+          <strong className="self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary">
+            {shop.name}
+          </strong>
+        </span>
       </NavLink>
       <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
       />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      <HeaderCtas  isLoggedIn={isLoggedIn} cart={cart} />
     </header>
   );
 }
@@ -40,7 +97,7 @@ export function HeaderMenu({
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
   viewport: Viewport;
 }) {
-  const { publicStoreDomain } = useRootLoaderData();
+  const {publicStoreDomain} = useRootLoaderData();
   const className = `header-menu-${viewport}`;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -58,7 +115,7 @@ export function HeaderMenu({
           onClick={closeAside}
           prefetch="intent"
           style={activeLinkStyle}
-          to={useVojtikLink("/")}
+          to={useVojtikLink('/')}
         >
           Home
         </NavLink>
@@ -69,8 +126,8 @@ export function HeaderMenu({
         // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
-            item.url.includes(publicStoreDomain) ||
-            item.url.includes(primaryDomainUrl)
+          item.url.includes(publicStoreDomain) ||
+          item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
         return (
@@ -95,11 +152,17 @@ function HeaderCtas({
   isLoggedIn,
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+  const context = useContext(VojtikContext);
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to={useVojtikLink("/account")} style={activeLinkStyle}>
-        {isLoggedIn ? 'Account' : <img src={user} className='h-4' />}
+      <LanguagesList languages={languages} activeLanguage={context.language} />
+      <NavLink
+        prefetch="intent"
+        to={useVojtikLink('/account')}
+        style={activeLinkStyle}
+      >
+        {isLoggedIn ? 'Account' : <img src={user} className="h-4" />}
       </NavLink>
       <SearchToggle />
       <CartToggle cart={cart} />
@@ -116,15 +179,23 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  return <a href="#search-aside"><img src={search} className='h-4' /></a>;
+  return (
+    <a href="#search-aside">
+      <img src={search} className="h-4" />
+    </a>
+  );
 }
 
-function CartBadge({ count }: { count: number }) {
+function CartBadge({count}: {count: number}) {
   // console.log(cart)
-  return <a href="#cart-aside" className='inline-flex gap-2 items-center'><img src={cart} className='h-4' /> {count}</a>;
+  return (
+    <a href="#cart-aside" className="inline-flex gap-2 items-center">
+      <img src={cart} className="h-4" /> {count}
+    </a>
+  );
 }
 
-function CartToggle({ cart }: Pick<HeaderProps, 'cart'>) {
+function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <Suspense fallback={<CartBadge count={0} />}>
       <Await resolve={cart}>

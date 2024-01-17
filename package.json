@@ -23,6 +23,7 @@
     "@shopify/remix-oxygen": "^2.0.2",
     "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.0",
+    "flag-icons": "^7.1.0",
     "framer-motion": "^10.17.9",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",

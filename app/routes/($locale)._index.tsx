@@ -1,6 +1,6 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link, type MetaFunction} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Suspense, useContext} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import type {
   FeaturedCollectionFragment,
@@ -21,6 +21,7 @@ import {
 import clsx from 'clsx';
 import Button from '~/components/Button';
 import VojtikLink from "../components/custom/VojtikLink"
+import { useLanguage } from '~/utils';
 
 export const meta: MetaFunction = () => {
   return [{title: 'ATELIÉR PRYIMAK'}];
@@ -49,6 +50,7 @@ export default function Homepage() {
 }
 
 function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
+  const language = useLanguage()
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
@@ -89,7 +91,7 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
                           className="recommended-product"
                           to={`/products/${product.handle}`}
                         >
-                          <Button>{'Více'}</Button>
+                          <Button>{language.buttons.more}</Button>
                         </VojtikLink>
                       </div>
                       <div>
@@ -139,9 +141,10 @@ export function RecommendedProducts({
 }: {
   products: Promise<RecommendedProductsQuery>;
 }) {
+  const language = useLanguage()
   return (
     <div className="recommended-products">
-      <h2>Doporučené produkty</h2>
+      <h2>{language.recommended_products}</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {({products}) => (

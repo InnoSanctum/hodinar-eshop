@@ -249,6 +249,7 @@ const HEADER_QUERY = `#graphql
     primaryDomain {
       url
     }
+    
     brand {
       logo {
         image {
@@ -284,3 +285,4 @@ const FOOTER_QUERY = `#graphql
   }
   ${MENU_FRAGMENT}
 ` as const;
+
