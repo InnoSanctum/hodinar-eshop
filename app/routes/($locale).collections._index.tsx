@@ -3,6 +3,8 @@ import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Pagination, getPaginationVariables, Image} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
 import VojtikLink from '~/components/custom/VojtikLink';
+import Loading from '~/components/Loading';
+import { useLanguage } from '~/utils';
 
 export async function loader({context, request}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
@@ -19,18 +21,19 @@ export async function loader({context, request}: LoaderFunctionArgs) {
 export default function Collections() {
   const {collections} = useLoaderData<typeof loader>();
 
+  const language = useLanguage()
   return (
     <div className="collections">
-      <h1>Collections</h1>
+      <h1>{language.collections}</h1>
       <Pagination connection={collections}>
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <div>
             <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+              {isLoading ? <Loading/> : <span>↑ {language.load} {language.buttons.previous}</span>}
             </PreviousLink>
             <CollectionsGrid collections={nodes} />
             <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+              {isLoading ? <Loading/> : <span>{language.load} {language.buttons.more} ↓</span>}
             </NextLink>
           </div>
         )}

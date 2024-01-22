@@ -4,11 +4,13 @@ import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {useRootLoaderData} from '~/root';
 import VojtikLink from './custom/VojtikLink';
 import useVojtikLink from './custom/useVojtikLink';
+import { useLanguage } from '~/utils';
 
 export function Footer({
   menu,
   shop,
 }: FooterQuery & {shop: HeaderQuery['shop']}) {
+  const language = useLanguage()
   return (<footer className="rounded-lg shadow bg-secondary/10 p-4 mt-auto">
   <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
     <div className="flex items-center justify-center sm:justify-between flex-wrap gap-8">
@@ -16,16 +18,14 @@ export function Footer({
         className="flex items-center space-x-3 rtl:space-x-reverse"
       >
         <span className="flex items-center gap-4 font-title self-center text-2xl font-semibold whitespace-nowrap text-tertiary">
-        <Image src={shop.brand?.logo?.image?.url} sizes='1rem' className='h-8' />
-          {shop.name}
+        <Image src={shop?.brand?.logo?.image?.url} sizes='1rem' className='h-8' />
+          {shop?.name}
         </span>
       </VojtikLink>
       {menu && shop?.primaryDomain?.url && (
         <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
       )}
-      {menu && shop?.primaryDomain?.url && (
-        <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
-      )}
+     
       {/* <ul className="flex flex-wrap items-center mb-6 text-sm font-medium sm:mb-0  gap-4">
         {settings.data.socials.map((item, i) => (
           <li key={i}>
@@ -40,9 +40,9 @@ export function Footer({
     <span className="block text-sm sm:text-center ">
       © {new Date().getFullYear()}{" "}
       <VojtikLink to="/" className="hover:underline">
-        {shop.name}
+        {shop?.name}
       </VojtikLink>
-      . All Rights Reserved.
+      . {language.copyright}
     </span>
   </div>
 </footer>

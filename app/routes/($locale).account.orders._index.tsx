@@ -5,7 +5,9 @@ import type {
   CustomerOrdersFragment,
   OrderItemFragment,
 } from 'storefrontapi.generated';
+import Loading from '~/components/Loading';
 import VojtikLink from '~/components/custom/VojtikLink';
+import { useLanguage } from '~/utils';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Orders'}];
@@ -62,6 +64,7 @@ export default function Orders() {
 }
 
 function OrdersTable({orders}: Pick<CustomerOrdersFragment, 'orders'>) {
+  const language = useLanguage()
   return (
     <div className="acccount-orders">
       {orders?.nodes.length ? (
@@ -70,13 +73,13 @@ function OrdersTable({orders}: Pick<CustomerOrdersFragment, 'orders'>) {
             return (
               <>
                 <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+                  {isLoading ? <Loading/> : <span>↑ {language.load} {language.buttons.previous}</span>}
                 </PreviousLink>
                 {nodes.map((order) => {
                   return <OrderItem key={order.id} order={order} />;
                 })}
                 <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+                  {isLoading ? <Loading/> : <span>{language.load} {language.buttons.more} ↓</span>}
                 </NextLink>
               </>
             );

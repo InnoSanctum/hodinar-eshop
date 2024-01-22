@@ -14,6 +14,8 @@ import {
   type SessionStorage,
   type Session,
 } from '@shopify/remix-oxygen';
+import {Locale, countries} from './app/data';
+import { getLocaleFromRequest } from './app/utils';
 
 /**
  * Export a fetch handler in module format.
@@ -93,7 +95,8 @@ export default {
   },
 };
 
-function getLocaleFromRequest(request: Request): I18nLocale {
+/* export function getLocaleFromRequest(request: Request): I18nLocale {
+  console.log("URL",request.url)
   const url = new URL(request.url);
   const firstPathPart = url.pathname.split('/')[1]?.toUpperCase() ?? '';
 
@@ -108,7 +111,41 @@ function getLocaleFromRequest(request: Request): I18nLocale {
   }
 
   return {language, country, pathPrefix};
-}
+} */
+/* export function getLocaleFromRequest(request: Request): Locale {
+  const url = new URL(request.url);
+  const firstPathPart = url.pathname.split('/')[1]?.toUpperCase() ?? '';
+
+  type I18nFromUrl = [Locale['language'], Locale['country']];
+
+  let pathPrefix = '';
+  let [language, country]: I18nFromUrl = ['CS', 'CZ'];
+
+  if (/^[A-Z]{2}-[A-Z]{2}$/i.test(firstPathPart)) {
+    pathPrefix = '/' + firstPathPart;
+    [language, country] = firstPathPart.split('-') as I18nFromUrl;
+  }
+  return language;
+} */
+
+/* export function getLocaleFromRequest(request: Request): Locale {
+  const url = new URL(request.url);
+
+  switch (url.host) {
+    case 'ca.hydrogen.shop':
+      if (/^\/fr($|\/)/.test(url.pathname)) {
+        return countries['fr-ca'];
+      } else {
+        return countries['en-ca'];
+      }
+      break;
+    case 'hydrogen.au':
+      return countries['en-au'];
+      break;
+    default:
+      return countries['default'];
+  }
+} */
 
 /**
  * This is a custom session implementation for your Hydrogen shop.

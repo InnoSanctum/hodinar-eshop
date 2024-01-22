@@ -79,6 +79,7 @@ export default function Login() {
         <fieldset>
           <label htmlFor="email">Email address</label>
           <input
+          className="text-primary bg-secondary"
             id="email"
             name="email"
             type="email"
@@ -91,6 +92,7 @@ export default function Login() {
           />
           <label htmlFor="password">Password</label>
           <input
+          className="text-primary bg-secondary"
             id="password"
             name="password"
             type="password"

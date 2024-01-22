@@ -16,6 +16,8 @@ import type {
   SearchQuery,
 } from 'storefrontapi.generated';
 import VojtikLink from './custom/VojtikLink';
+import { useLanguage } from '~/utils';
+import Loading from './Loading';
 
 type PredicticeSearchResultItemImage =
   | PredictiveCollectionFragment['image']
@@ -87,19 +89,19 @@ export function SearchForm({searchTerm}: {searchTerm: string}) {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
-
+const language=useLanguage()
   return (
     <Form method="get">
       <input
         defaultValue={searchTerm}
         name="q"
-        placeholder="Search…"
+        placeholder={`${language.buttons.search}...`}
         ref={inputRef}
         type="search"
         className='text-primary bg-secondary'
       />
       &nbsp;
-      <button type="submit">Search</button>
+      <button type="submit">{language.buttons.search}</button>
     </Form>
   );
 }
@@ -151,6 +153,7 @@ export function SearchResults({
 }
 
 function SearchResultsProductsGrid({products}: Pick<SearchQuery, 'products'>) {
+  const language = useLanguage()
   return (
     <div className="search-result">
       <h2>Products</h2>
@@ -167,7 +170,7 @@ function SearchResultsProductsGrid({products}: Pick<SearchQuery, 'products'>) {
             <div>
               <div>
                 <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+                  {isLoading ? <Loading/> : <span>↑ {language.load} {language.buttons.previous}</span>}
                 </PreviousLink>
               </div>
               <div>
@@ -176,7 +179,7 @@ function SearchResultsProductsGrid({products}: Pick<SearchQuery, 'products'>) {
               </div>
               <div>
                 <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+                  {isLoading ? <Loading/> : <span>{language.load} {language.buttons.more} ↓</span>}
                 </NextLink>
               </div>
             </div>
@@ -225,7 +228,8 @@ function SearchResultArticleGrid({articles}: Pick<SearchQuery, 'articles'>) {
 }
 
 export function NoSearchResults() {
-  return <p>No results, try a different search.</p>;
+const language=  useLanguage()
+  return <p>{language.results}</p>;
 }
 
 type ChildrenRenderProps = {

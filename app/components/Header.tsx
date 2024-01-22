@@ -1,4 +1,4 @@
-import {Await, NavLink} from '@remix-run/react';
+import {Await,  useMatches} from '@remix-run/react';
 import {Suspense, useContext} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
@@ -7,8 +7,8 @@ import cart from '../../public/assets/svgs/cart.svg';
 import search from '../../public/assets/svgs/search.svg';
 import user from '../../public/assets/svgs/user.svg';
 import {Image} from '@shopify/hydrogen';
-import useVojtikLink from './custom/useVojtikLink';
 import {VojtikContext} from './custom/VojtikContext';
+import VojtikNavLink from './custom/VojtikNavLink';
 // import '/node_modules/flag-icons/css/flag-icons.min.css';
 // import "../styles/flags.css";
 import CS from '../../public/assets/flags/4x3/cz.svg';
@@ -22,12 +22,12 @@ export const languages: I18nLocale[] = [
   {
     country: 'CZ',
     language: 'CS',
-    pathPrefix: '/',
+    pathPrefix: '',
   },
   {
     country: 'US',
     language: 'EN',
-    pathPrefix: 'EN-US',
+    pathPrefix: '/en',
   },
 ];
 
@@ -38,6 +38,12 @@ function LanguagesList({
   languages: I18nLocale[];
   activeLanguage: I18nLocale;
 }) {
+  // console.log(storefront.i18n);
+
+  // console.log(useMatches())
+  // const selectedLocale = root[1].data.selectedLocale;
+  // console.log(activeLanguage,selectedLocale)
+
   const flags = {CS, EN};
   return (
     <div className="flex gap-4 flex-wrap">
@@ -47,7 +53,7 @@ function LanguagesList({
           <a
             className="hover:underline"
             key={language.pathPrefix}
-            href={language.pathPrefix}
+            href={language.pathPrefix || '/'}
           >
             <img className="h-4" src={flags[language.language]} />
           </a>
@@ -61,12 +67,7 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
 
   return (
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-20 relative">
-      <NavLink
-        prefetch="intent"
-        to={useVojtikLink('/')}
-        style={activeLinkStyle}
-        end
-      >
+      <VojtikNavLink prefetch="intent" to={'/'} style={activeLinkStyle} end>
         <span className="flex items-center gap-4 font-title">
           <Image
             src={shop.brand?.logo?.image?.url}
@@ -77,13 +78,13 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
             {shop.name}
           </strong>
         </span>
-      </NavLink>
+      </VojtikNavLink>
       <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
       />
-      <HeaderCtas  isLoggedIn={isLoggedIn} cart={cart} />
+      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
     </header>
   );
 }
@@ -110,15 +111,15 @@ export function HeaderMenu({
   return (
     <nav className={className} role="navigation">
       {viewport === 'mobile' && (
-        <NavLink
+        <VojtikNavLink
           end
           onClick={closeAside}
           prefetch="intent"
           style={activeLinkStyle}
-          to={useVojtikLink('/')}
+          to={'/'}
         >
           Home
-        </NavLink>
+        </VojtikNavLink>
       )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
@@ -131,17 +132,17 @@ export function HeaderMenu({
             ? new URL(item.url).pathname
             : item.url;
         return (
-          <NavLink
+          <VojtikNavLink
             className="header-menu-item text-secondary"
             end
             key={item.id}
             onClick={closeAside}
             prefetch="intent"
             style={activeLinkStyle}
-            to={useVojtikLink(url)}
+            to={url}
           >
             {item.title}
-          </NavLink>
+          </VojtikNavLink>
         );
       })}
     </nav>
@@ -157,13 +158,9 @@ function HeaderCtas({
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
       <LanguagesList languages={languages} activeLanguage={context.language} />
-      <NavLink
-        prefetch="intent"
-        to={useVojtikLink('/account')}
-        style={activeLinkStyle}
-      >
+      <VojtikNavLink prefetch="intent" to={'/account'} style={activeLinkStyle}>
         {isLoggedIn ? 'Account' : <img src={user} className="h-4" />}
-      </NavLink>
+      </VojtikNavLink>
       <SearchToggle />
       <CartToggle cart={cart} />
     </nav>

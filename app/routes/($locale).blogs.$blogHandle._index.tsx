@@ -3,6 +3,8 @@ import {Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Image, Pagination, getPaginationVariables} from '@shopify/hydrogen';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
 import VojtikLink from '~/components/custom/VojtikLink';
+import Loading from '~/components/Loading';
+import { useLanguage } from '~/utils';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `ATELIÉR PRYIMAK | ${data?.blog.title ?? ''} blog`}];
@@ -38,7 +40,7 @@ export const loader = async ({
 export default function Blog() {
   const {blog} = useLoaderData<typeof loader>();
   const {articles} = blog;
-
+const language = useLanguage()
   return (
     <div className="blog">
       <h1>{blog.title}</h1>
@@ -48,7 +50,7 @@ export default function Blog() {
             return (
               <>
                 <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+                  {isLoading ? <Loading/> : <span>↑ {language.load} {language.buttons.previous}</span>}
                 </PreviousLink>
                 {nodes.map((article, index) => {
                   return (
@@ -60,7 +62,7 @@ export default function Blog() {
                   );
                 })}
                 <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+                  {isLoading ? <Loading/> : <span>{language.load} {language.buttons.more} ↓</span>}
                 </NextLink>
               </>
             );

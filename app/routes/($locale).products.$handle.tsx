@@ -248,6 +248,7 @@ function ProductMain({
   variants: Promise<ProductVariantsQuery>;
 }) {
   const {title, descriptionHtml} = product;
+  const language = useLanguage();
   return (
     <div className="product-main">
       <h1>{title}</h1>
@@ -278,7 +279,7 @@ function ProductMain({
       <br />
       <br />
       <h4>
-        <strong>Popis</strong>
+        <strong>{language.description}</strong>
       </h4>
       <br />
       <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
@@ -321,7 +322,7 @@ function ProductForm({
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
-  const language =useLanguage()
+  const language = useLanguage();
   return (
     <div className="product-form">
       <VariantSelector
@@ -348,7 +349,9 @@ function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? "language.buttons.basket" : "language.buttons.sold"}
+        {selectedVariant?.availableForSale
+          ? language.buttons.basket
+          : language.buttons.sold}
       </AddToCartButton>
     </div>
   );

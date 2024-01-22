@@ -3,6 +3,7 @@ import {useLoaderData, type MetaFunction} from '@remix-run/react';
 import {getPaginationVariables} from '@shopify/hydrogen';
 
 import {SearchForm, SearchResults, NoSearchResults} from '~/components/Search';
+import { useLanguage } from '~/utils';
 
 export const meta: MetaFunction = () => {
   return [{title: `ATELIÉR PRYIMAK | Vyhledávání`}];
@@ -46,10 +47,10 @@ export async function loader({request, context}: LoaderFunctionArgs) {
 
 export default function SearchPage() {
   const {searchTerm, searchResults} = useLoaderData<typeof loader>();
-
+const language = useLanguage()
   return (
     <div className="search">
-      <h1>Search</h1>
+      <h1>{language.buttons.search}</h1>
       <SearchForm searchTerm={searchTerm} />
       {!searchTerm || !searchResults.totalResults ? (
         <NoSearchResults />

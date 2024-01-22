@@ -77,6 +77,7 @@ export default function Recover() {
               <fieldset>
                 <label htmlFor="email">Email</label>
                 <input
+                  className="text-primary bg-secondary"
                   aria-label="Email address"
                   autoComplete="email"
                   // eslint-disable-next-line jsx-a11y/no-autofocus

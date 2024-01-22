@@ -24,6 +24,7 @@ import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import {cssBundleHref} from '@remix-run/css-bundle';
 import {VojtikContext} from './components/custom/VojtikContext';
+import { getLocaleFromRequest } from './utils';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -106,6 +107,7 @@ export async function loader({context}: LoaderFunctionArgs) {
       isLoggedIn,
       language,
       publicStoreDomain,
+      // selectedLocale: await getLocaleFromRequest(context)
     },
     {headers},
   );

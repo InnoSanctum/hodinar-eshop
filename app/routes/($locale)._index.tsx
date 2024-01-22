@@ -20,8 +20,8 @@ import {
 
 import clsx from 'clsx';
 import Button from '~/components/Button';
-import VojtikLink from "../components/custom/VojtikLink"
-import { useLanguage } from '~/utils';
+import VojtikLink from '../components/custom/VojtikLink';
+import {useLanguage} from '~/utils';
 
 export const meta: MetaFunction = () => {
   return [{title: 'ATELIÉR PRYIMAK'}];
@@ -29,7 +29,6 @@ export const meta: MetaFunction = () => {
 
 export async function loader({context}: LoaderFunctionArgs) {
   const {storefront} = context;
-  console.log(storefront.i18n);
   const {collections} = await storefront.query(FEATURED_COLLECTION_QUERY);
   const featuredCollection = collections.nodes[0];
   const recommendedProducts = storefront.query(RECOMMENDED_PRODUCTS_QUERY);
@@ -50,7 +49,7 @@ export default function Homepage() {
 }
 
 function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
-  const language = useLanguage()
+  const language = useLanguage();
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
@@ -123,7 +122,8 @@ function FeaturedCollection({
   if (!collection) return null;
   const image = collection?.image;
   return (
-    <VojtikLink      className="featured-collection"
+    <VojtikLink
+      className="featured-collection"
       to={`/collections/${collection.handle}`}
     >
       {image && (
@@ -141,7 +141,7 @@ export function RecommendedProducts({
 }: {
   products: Promise<RecommendedProductsQuery>;
 }) {
-  const language = useLanguage()
+  const language = useLanguage();
   return (
     <div className="recommended-products">
       <h2>{language.recommended_products}</h2>

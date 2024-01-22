@@ -1,17 +1,26 @@
 {
-    "buttons": {
-      "more": "Více",
-      "basket": "Přidat do košíku",
-      "sold": "Vyprodáno",
-      "search": "Hledat",
-      "all_results": "View all results for ",
-      "apply": "Aplikovat",
-      "checkout": "Pokračujte k pokladně"
-    },
-    "totals": "Soušty",
-    "subtotal": "Mezisoučet",
-    "popis": "Popis",
-    "recommended_products": "Doporučené produkty",
-    "copyright": "Všechna práva vyhrazena."
-  }
-  
+  "buttons": {
+    "more": "Více",
+    "previous": "Předchozí",
+    "basket": "Přidat do košíku",
+    "sold": "Vyprodáno",
+    "search": "Hledat",
+    "all_results": "View all results for ",
+    "apply": "Aplikovat",
+    "checkout": "Pokračujte k pokladně"
+  },
+  "totals": "Soušty",
+  "collections":"Kolekce",
+  "subtotal": "Mezisoučet",
+  "description": "Popis",
+  "results":"Žádné výsledky, zkuste to jinak.",
+  "recommended_products": "Doporučené produkty",
+  "copyright": "Všechna práva vyhrazena.",
+  "load": "Načíst",
+  "register":"Registrace",
+  "login":"Přihlášení",
+  "email":"Email",
+  "password":"Heslo",
+  "password2":"Zadejte heslo znovu",
+  "password3":"Zapomenuté heslo"
+}

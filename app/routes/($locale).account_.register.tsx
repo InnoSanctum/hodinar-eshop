@@ -7,6 +7,7 @@ import {
 import {Form, Link, useActionData} from '@remix-run/react';
 import type {CustomerCreateMutation} from 'storefrontapi.generated';
 import VojtikLink from '~/components/custom/VojtikLink';
+import { useLanguage } from '~/utils';
 
 type ActionResponse = {
   error: string | null;
@@ -107,42 +108,46 @@ export async function action({request, context}: ActionFunctionArgs) {
 export default function Register() {
   const data = useActionData<ActionResponse>();
   const error = data?.error || null;
+  const language = useLanguage()
   return (
     <div className="login">
-      <h1>Register.</h1>
+      <h1>{language.register}.</h1>
       <Form method="POST">
         <fieldset>
-          <label htmlFor="email">Email address</label>
+          <label htmlFor="email">{language.email}</label>
           <input
+          className="text-primary bg-secondary"
             id="email"
             name="email"
             type="email"
             autoComplete="email"
             required
-            placeholder="Email address"
-            aria-label="Email address"
+            placeholder={language.email}
+            aria-label={language.email}
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
           />
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">{language.password}</label>
           <input
+          className="text-primary bg-secondary"
             id="password"
             name="password"
             type="password"
             autoComplete="current-password"
-            placeholder="Password"
-            aria-label="Password"
+            placeholder={language.password}
+            aria-label={language.password}
             minLength={8}
             required
           />
-          <label htmlFor="passwordConfirm">Re-enter password</label>
+          <label htmlFor="passwordConfirm">{language.password2}</label>
           <input
+          className="text-primary bg-secondary"
             id="passwordConfirm"
             name="passwordConfirm"
             type="password"
             autoComplete="current-password"
-            placeholder="Re-enter password"
-            aria-label="Re-enter password"
+            placeholder={language.password2}
+            aria-label={language.password2}
             minLength={8}
             required
           />
@@ -156,11 +161,11 @@ export default function Register() {
         ) : (
           <br />
         )}
-        <button type="submit">Register</button>
+        <button type="submit">{language.register}</button>
       </Form>
       <br />
       <p>
-        <VojtikLink to="/account/login">Login →</VojtikLink>
+        <VojtikLink to="/account/login">{language.login} →</VojtikLink>
       </p>
     </div>
   );

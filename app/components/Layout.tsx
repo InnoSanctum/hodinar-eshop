@@ -1,18 +1,20 @@
-import { Await } from '@remix-run/react';
-import { Suspense } from 'react';
+import {Await} from '@remix-run/react';
+import {Suspense} from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
   HeaderQuery,
 } from 'storefrontapi.generated';
-import { Aside } from '~/components/Aside';
-import { Footer } from '~/components/Footer';
-import { Header, HeaderMenu } from '~/components/Header';
-import { CartMain } from '~/components/Cart';
+import {Aside} from '~/components/Aside';
+import {Footer} from '~/components/Footer';
+import {Header, HeaderMenu} from '~/components/Header';
+import {CartMain} from '~/components/Cart';
 import {
   PredictiveSearchForm,
   PredictiveSearchResults,
 } from '~/components/Search';
+import Loading from './Loading';
+import {useLanguage} from '~/utils';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
@@ -45,10 +47,10 @@ export function Layout({
   );
 }
 
-function CartAside({ cart }: { cart: LayoutProps['cart'] }) {
+function CartAside({cart}: {cart: LayoutProps['cart']}) {
   return (
     <Aside id="cart-aside" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
+      <Suspense fallback={<Loading />}>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
@@ -60,23 +62,27 @@ function CartAside({ cart }: { cart: LayoutProps['cart'] }) {
 }
 
 function SearchAside() {
+  const language = useLanguage();
   return (
     <Aside id="search-aside" heading="SEARCH">
       <div className="predictive-search">
         <br />
         <PredictiveSearchForm>
-          {({ fetchResults, inputRef }) => (
+          {({fetchResults, inputRef}) => (
             <div>
               <input
                 name="q"
                 onChange={fetchResults}
                 onFocus={fetchResults}
-                placeholder="Search"
+                placeholder={language.buttons.search}
                 ref={inputRef}
-                type="search" className='text-primary bg-secondary'
+                type="search"
+                className="text-primary bg-secondary"
               />
               &nbsp;
-              <button type="submit" className='text-primary'>Search</button>
+              <button type="submit" className="text-primary">
+                {language.buttons.search}
+              </button>
             </div>
           )}
         </PredictiveSearchForm>

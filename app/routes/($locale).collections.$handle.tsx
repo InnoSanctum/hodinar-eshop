@@ -7,9 +7,10 @@ import {
   Money,
 } from '@shopify/hydrogen';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import {useVariantUrl} from '~/utils';
+import {useLanguage, useVariantUrl} from '~/utils';
 import Product from '~/components/Product';
 import VojtikLink from '~/components/custom/VojtikLink';
+import Loading from '~/components/Loading';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `ATELIÉR PRYIMAK | ${data?.collection.title ?? ''} Kolekce`}];
@@ -40,7 +41,7 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
 
 export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
-
+const language = useLanguage()
   return (
     <div className="collection">
       <h1>{collection.title}</h1>
@@ -49,12 +50,12 @@ export default function Collection() {
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
             <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
+              {isLoading ? <Loading/> : <span>↑ {language.load} {language.buttons.previous}</span>}
             </PreviousLink>
             <ProductsGrid products={nodes} />
             <br />
             <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
+              {isLoading ? <Loading/> : <span>{language.load} {language.buttons.more} ↓</span>}
             </NextLink>
           </>
         )}
