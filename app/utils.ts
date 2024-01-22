@@ -3,8 +3,8 @@ import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {useState, useEffect, useContext} from 'react';
 import {useMemo} from 'react';
 import {VojtikContext} from './components/custom/VojtikContext';
-import CS from './translations/CS.json';
-import EN from './translations/EN.json';
+import CS from './translations/cs.json';
+import EN from './translations/en.json';
 import {Locale, countries} from './data';
 import {languages} from './components/Header';
 export function useVariantUrl(
