@@ -2,7 +2,7 @@ import {CartForm, Image, Money} from '@shopify/hydrogen';
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import {Link} from '@remix-run/react';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import {useVariantUrl} from '~/utils';
+import {useLanguage, useVariantUrl} from '~/utils';
 import VojtikLink from './custom/VojtikLink';
 
 type CartLine = CartApiQueryFragment['lines']['nodes'][0];
@@ -88,7 +88,8 @@ function CartLineItem({
       )}
 
       <div>
-        <VojtikLink          prefetch="intent"
+        <VojtikLink
+          prefetch="intent"
           to={lineItemUrl}
           onClick={() => {
             if (layout === 'aside') {
@@ -119,11 +120,11 @@ function CartLineItem({
 
 function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
   if (!checkoutUrl) return null;
-
+  const language = useLanguage();
   return (
     <div>
       <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+        <p>{language.cart.checkout} &rarr;</p>
       </a>
       <br />
     </div>
@@ -141,12 +142,13 @@ export function CartSummary({
 }) {
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
+    const language = useLanguage();
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
-      <h4>Totals</h4>
-      <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
+      <h4>{language.totals}</h4>
+      <dl className="cart-subtotal gap-2">
+        <dt>{language.subtotal} </dt>
         <dd>
           {cost?.subtotalAmount?.amount ? (
             <Money data={cost?.subtotalAmount} />
@@ -161,13 +163,14 @@ export function CartSummary({
 }
 
 function CartLineRemoveButton({lineIds}: {lineIds: string[]}) {
+  const language = useLanguage();
   return (
     <CartForm
       route="/cart"
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button type="submit">Remove</button>
+      <button type="submit">{language.buttons.remove}</button>
     </CartForm>
   );
 }
@@ -177,10 +180,10 @@ function CartLineQuantity({line}: {line: CartLine}) {
   const {id: lineId, quantity} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
-
+const language =useLanguage()
   return (
     <div className="cart-line-quantiy">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
+      <small>{language.quantity}: {quantity} &nbsp;&nbsp;</small>
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
           aria-label="Decrease quantity"
@@ -241,22 +244,21 @@ export function CartEmpty({
   hidden: boolean;
   layout?: CartMainProps['layout'];
 }) {
+  const language = useLanguage();
   return (
     <div hidden={hidden}>
       <br />
-      <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
-        started!
-      </p>
+      <p>{language.cart.text}</p>
       <br />
-      <VojtikLink        to="/collections"
+      <VojtikLink
+        to="/collections"
         onClick={() => {
           if (layout === 'aside') {
             window.location.href = '/collections';
           }
         }}
       >
-        Continue shopping →
+        {language.cart.continue} →
       </VojtikLink>
     </div>
   );
@@ -272,17 +274,18 @@ function CartDiscounts({
       ?.filter((discount) => discount.applicable)
       ?.map(({code}) => code) || [];
 
+  const language = useLanguage();
   return (
     <div>
       {/* Have existing discount, display it with a remove option */}
       <dl hidden={!codes.length}>
         <div>
-          <dt>Discount(s)</dt>
+          <dt>{language.discount}</dt>
           <UpdateDiscountForm>
             <div className="cart-discount">
               <code>{codes?.join(', ')}</code>
               &nbsp;
-              <button>Remove</button>
+              <button>{language.buttons.remove}</button>
             </div>
           </UpdateDiscountForm>
         </div>
@@ -291,9 +294,14 @@ function CartDiscounts({
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
         <div>
-          <input className='text-primary' type="text" name="discountCode" placeholder="Discount code" />
+          <input
+            className="text-primary"
+            type="text"
+            name="discountCode"
+            placeholder={language.discount_code}
+          />
           &nbsp;
-          <button type="submit">Apply</button>
+          <button type="submit">{language.buttons.apply}</button>
         </div>
       </UpdateDiscountForm>
     </div>

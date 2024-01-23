@@ -50,59 +50,76 @@ export function getVariantUrl({
   return path + (searchString ? '?' + searchParams.toString() : '');
 }
 
-const CS = {
-  "buttons": {
-    "more": "Více",
-    "previous": "Předchozí",
-    "basket": "Přidat do košíku",
-    "sold": "Vyprodáno",
-    "search": "Hledat",
-    "all_results": "View all results for ",
-    "apply": "Aplikovat",
-    "checkout": "Pokračujte k pokladně"
+const CS: Language = {
+  buttons: {
+    more: 'Více',
+    previous: 'Předchozí',
+    basket: 'Přidat do košíku',
+    sold: 'Vyprodáno',
+    search: 'Hledat',
+    all_results: 'View all results for ',
+    apply: 'Aplikovat',
+    checkout: 'Pokračujte k pokladně',
+    remove: 'Odstranit',
   },
-  "totals": "Soušty",
-  "collections":"Kolekce",
-  "subtotal": "Mezisoučet",
-  "description": "Popis",
-  "results":"Žádné výsledky, zkuste to jinak.",
-  "recommended_products": "Doporučené produkty",
-  "copyright": "Všechna práva vyhrazena.",
-  "load": "Načíst",
-  "register":"Registrace",
-  "login":"Přihlášení",
-  "email":"Email",
-  "password":"Heslo",
-  "password2":"Zadejte heslo znovu",
-  "password3":"Zapomenuté heslo"
-}
-const EN = {
-  "buttons": {
-    "more": "More",
-    "previous": "Previous",
-    "basket": "Add to Basket",
-    "sold": "Sold Out",
-    "search": "Search",
-    "all_results": "View all results for ",
-    "apply": "Apply",
-    "checkout": "Proceed to Checkout"
+  cart: {
+    text: 'Vypadá to, že jste ještě nic nepřidali, pojďme začít!',
+    continue: 'Pokračovat v nákupu',
+    checkout: 'Pokračujte k pokladně',
   },
-  "totals": "Totals",
-  "collections": "Collections",
-  "subtotal": "Subtotal",
-  "description": "Description",
-  "results": "No results, try a different search.",
-  "recommended_products": "Recommended Products",
-  "copyright": "All rights reserved.",
-  "load": "Load",
-  "register": "Registration",
-  "login": "Login",
-  "email": "Email",
-  "password": "Password",
-  "password2": "Enter Password Again",
-  "password3": "Forgotten Password"
-}
-
+  totals: 'Soušty',
+  collections: 'Kolekce',
+  subtotal: 'Mezisoučet',
+  description: 'Popis',
+  results: 'Žádné výsledky, zkuste to jinak.',
+  recommended_products: 'Doporučené produkty',
+  copyright: 'Všechna práva vyhrazena.',
+  load: 'Načíst',
+  register: 'Registrace',
+  login: 'Přihlášení',
+  email: 'Email',
+  password: 'Heslo',
+  password2: 'Zadejte heslo znovu',
+  password3: 'Zapomenuté heslo',
+  discount: 'Sleva/y',
+  discount_code: 'Slevový kód',
+  quantity: 'Množství',
+};
+const EN: Language = {
+  buttons: {
+    more: 'More',
+    previous: 'Previous',
+    basket: 'Add to Basket',
+    sold: 'Sold Out',
+    search: 'Search',
+    all_results: 'View all results for ',
+    apply: 'Apply',
+    checkout: 'Proceed to Checkout',
+    remove: 'Remove',
+  },
+  cart: {
+    text: "Looks like you haven't added anything yet, let's get you started!",
+    continue: 'Continue shopping',
+    checkout: 'Continue to Checkout',
+  },
+  totals: 'Totals',
+  collections: 'Collections',
+  subtotal: 'Subtotal',
+  description: 'Description',
+  results: 'No results, try a different search.',
+  recommended_products: 'Recommended Products',
+  copyright: 'All rights reserved.',
+  load: 'Load',
+  register: 'Registration',
+  login: 'Login',
+  email: 'Email',
+  password: 'Password',
+  password2: 'Enter Password Again',
+  password3: 'Forgotten Password',
+  discount: 'Discount(s)',
+  discount_code: 'Discount code',
+  quantity: 'Quantity',
+};
 
 export function useLanguage(/* language:I18nLocale */): Language {
   const [translations, setTranslations] = useState<Language>(CS);
@@ -110,7 +127,6 @@ export function useLanguage(/* language:I18nLocale */): Language {
     language: {language},
   } = useContext(VojtikContext);
   useEffect(() => {
-    console.log(language);
     // Dynamicky importuje požadovaný jazykový soubor
     // import(`./translations/${language.language}.json`)
     //   .then((module) => {
@@ -128,6 +144,7 @@ export function useLanguage(/* language:I18nLocale */): Language {
 }
 export interface Language {
   buttons: Buttons;
+  cart: Cart;
   totals: string;
   subtotal: string;
   description: string;
@@ -142,6 +159,9 @@ export interface Language {
   password: string;
   password2: string;
   password3: string;
+  discount: string;
+  discount_code: string;
+  quantity: string;
 }
 
 export interface Buttons {
@@ -152,6 +172,12 @@ export interface Buttons {
   search: string;
   all_results: string;
   apply: string;
+  checkout: string;
+  remove: string;
+}
+interface Cart {
+  text: string;
+  continue: string;
   checkout: string;
 }
 
