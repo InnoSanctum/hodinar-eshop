@@ -3,8 +3,8 @@ import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {useState, useEffect, useContext} from 'react';
 import {useMemo} from 'react';
 import {VojtikContext} from './components/custom/VojtikContext';
-import CS from './translations/cs.json';
-import EN from './translations/en.json';
+// import CS from './translations/cs.json';
+// import EN from './translations/en.json';
 import {Locale, countries} from './data';
 import {languages} from './components/Header';
 export function useVariantUrl(
@@ -49,6 +49,60 @@ export function getVariantUrl({
 
   return path + (searchString ? '?' + searchParams.toString() : '');
 }
+
+const CS = {
+  "buttons": {
+    "more": "Více",
+    "previous": "Předchozí",
+    "basket": "Přidat do košíku",
+    "sold": "Vyprodáno",
+    "search": "Hledat",
+    "all_results": "View all results for ",
+    "apply": "Aplikovat",
+    "checkout": "Pokračujte k pokladně"
+  },
+  "totals": "Soušty",
+  "collections":"Kolekce",
+  "subtotal": "Mezisoučet",
+  "description": "Popis",
+  "results":"Žádné výsledky, zkuste to jinak.",
+  "recommended_products": "Doporučené produkty",
+  "copyright": "Všechna práva vyhrazena.",
+  "load": "Načíst",
+  "register":"Registrace",
+  "login":"Přihlášení",
+  "email":"Email",
+  "password":"Heslo",
+  "password2":"Zadejte heslo znovu",
+  "password3":"Zapomenuté heslo"
+}
+const EN = {
+  "buttons": {
+    "more": "More",
+    "previous": "Previous",
+    "basket": "Add to Basket",
+    "sold": "Sold Out",
+    "search": "Search",
+    "all_results": "View all results for ",
+    "apply": "Apply",
+    "checkout": "Proceed to Checkout"
+  },
+  "totals": "Totals",
+  "collections": "Collections",
+  "subtotal": "Subtotal",
+  "description": "Description",
+  "results": "No results, try a different search.",
+  "recommended_products": "Recommended Products",
+  "copyright": "All rights reserved.",
+  "load": "Load",
+  "register": "Registration",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "password2": "Enter Password Again",
+  "password3": "Forgotten Password"
+}
+
 
 export function useLanguage(/* language:I18nLocale */): Language {
   const [translations, setTranslations] = useState<Language>(CS);
