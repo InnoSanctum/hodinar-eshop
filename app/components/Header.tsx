@@ -69,8 +69,8 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-20 relative">
       <VojtikNavLink prefetch="intent" to={'/'} style={activeLinkStyle} end>
         <span className="flex items-center gap-4 font-title">
-          <Image
-            src={shop.brand?.logo?.image?.url}
+          <Image 
+             src={shop.brand?.logo?.image?.url}
             sizes="1rem"
             className="h-8"
           />
