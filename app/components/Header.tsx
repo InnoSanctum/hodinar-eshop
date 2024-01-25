@@ -6,6 +6,7 @@ import {useRootLoaderData} from '~/root';
 import cart from '../../public/assets/svgs/cart.svg';
 import search from '../../public/assets/svgs/search.svg';
 import user from '../../public/assets/svgs/user.svg';
+import phone from '../../public/assets/svgs/phone.svg';
 import {Image} from '@shopify/hydrogen';
 import {VojtikContext} from './custom/VojtikContext';
 import VojtikNavLink from './custom/VojtikNavLink';
@@ -64,7 +65,7 @@ function LanguagesList({
 }
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
-
+  console.log(shop);
   return (
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-20 relative">
       <VojtikNavLink prefetch="intent" to={'/'} style={activeLinkStyle} end>
@@ -157,6 +158,7 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
+      <Call />
       <LanguagesList languages={languages} activeLanguage={context.language} />
       <VojtikNavLink prefetch="intent" to={'/account'} style={activeLinkStyle}>
         {isLoggedIn ? 'Account' : <img src={user} className="h-4" />}
@@ -246,6 +248,16 @@ const FALLBACK_HEADER_MENU = {
     },
   ],
 };
+
+function Call() {
+  const number = '+420 608 211 665';
+  return (
+    <a href={`tel:${number}`} className='h-8 hidden md:flex gap-2 items-center'>
+      <img src={phone} className='h-6' />
+      <p>{number}</p>
+    </a>
+  );
+}
 
 function activeLinkStyle({
   isActive,

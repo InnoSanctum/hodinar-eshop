@@ -18,13 +18,12 @@ import {
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
-import favicon from '../public/favicon.svg';
+import favicon from '../public/logo.svg';
 import resetStyles from './styles/reset.css';
 import appStyles from './styles/app.css';
 import {Layout} from '~/components/Layout';
 import {cssBundleHref} from '@remix-run/css-bundle';
 import {VojtikContext} from './components/custom/VojtikContext';
-import { getLocaleFromRequest } from './utils';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -98,7 +97,6 @@ export async function loader({context}: LoaderFunctionArgs) {
       headerMenuHandle: 'main-menu', // Adjust to your header menu handle
     },
   });
-
   return defer(
     {
       cart: cartPromise,
@@ -118,7 +116,7 @@ export default function App() {
   const data = useLoaderData<typeof loader>();
 
   return (
-    <html lang="en">
+    <html lang={data.language.language}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -251,7 +249,6 @@ const HEADER_QUERY = `#graphql
     primaryDomain {
       url
     }
-    
     brand {
       logo {
         image {
@@ -287,4 +284,3 @@ const FOOTER_QUERY = `#graphql
   }
   ${MENU_FRAGMENT}
 ` as const;
-
