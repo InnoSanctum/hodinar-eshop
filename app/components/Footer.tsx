@@ -5,7 +5,8 @@ import {useRootLoaderData} from '~/root';
 import VojtikLink from './custom/VojtikLink';
 import useVojtikLink from './custom/useVojtikLink';
 import {useLanguage} from '~/utils';
-import Socials from "./Socials"
+import Socials from './Socials';
+import {Call} from './Header';
 
 export function Footer({
   menu,
@@ -33,7 +34,8 @@ export function Footer({
           {menu && shop?.primaryDomain?.url && (
             <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
           )}
-  <Socials/>
+          <Socials />
+          <Call />
           {/* <ul className="flex flex-wrap items-center mb-6 text-sm font-medium sm:mb-0  gap-4">
         {settings.data.socials.map((item, i) => (
           <li key={i}>
@@ -67,7 +69,7 @@ function FooterMenu({
   const {publicStoreDomain} = useRootLoaderData();
 
   return (
-    <nav className="footer-menu" role="navigation">
+    <nav className="footer-menu flex-wrap" role="navigation">
       {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
         if (!item.url) return null;
         // if the url is internal, we strip the domain

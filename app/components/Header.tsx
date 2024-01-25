@@ -158,7 +158,7 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <Call />
+      <div className='hidden md:block'><Call /></div>
       <LanguagesList languages={languages} activeLanguage={context.language} />
       <VojtikNavLink prefetch="intent" to={'/account'} style={activeLinkStyle}>
         {isLoggedIn ? 'Account' : <img src={user} className="h-4" />}
@@ -249,10 +249,10 @@ const FALLBACK_HEADER_MENU = {
   ],
 };
 
-function Call() {
+export function Call() {
   const number = '+420 608 211 665';
   return (
-    <a href={`tel:${number}`} className='h-8 hidden md:flex gap-2 items-center'>
+    <a href={`tel:${number}`} className='h-8 flex gap-2 items-center'>
       <img src={phone} className='h-6' />
       <p>{number}</p>
     </a>

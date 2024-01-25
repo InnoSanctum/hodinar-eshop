@@ -18,12 +18,12 @@ export default function Socials() {
     {url: 'https://pin.it/TLGCJC9', icon: pinterest},
   ];
   return (
-    <ul className='flex flex-wrap gap-4 h-6'>
+    <ul className="flex flex-wrap gap-4 h-6">
       {socials.map((item, i) => {
         return (
           <li key={i}>
             <a href={item.url} target="_blank">
-              <img src={item.icon} className='h-6' />
+              <img src={item.icon} loading="lazy" className="h-6" />
             </a>
           </li>
         );
