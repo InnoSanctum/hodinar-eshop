@@ -60,6 +60,7 @@ body {
 }
 
 :root {
+  --aside-width-mobile: 80vw;
   --aside-width: 400px;
   --cart-aside-summary-height-with-discount: 300px;
   --cart-aside-summary-height: 250px;
@@ -81,8 +82,7 @@ img {
 aside {
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
   height: 100vh;
-  max-width: var(--aside-width);
-  min-width: var(--aside-width);
+  width: var(--aside-width);
   position: fixed;
   right: calc(-1 * var(--aside-width));
   top: 0;
@@ -181,7 +181,21 @@ aside li {
 .overlay:target aside {
   transform: translateX(calc(var(--aside-width) * -1));
 }
-
+@media (max-width: 500px) {
+  .overlay:target aside {
+    transform: translateX(calc(var(--aside-width-mobile) * -1));
+  }
+  aside {
+    width: var(--aside-width-mobile);
+    right: calc(-1 * var(--aside-width-mobile));
+  }
+  .overlay .close-outside {
+    width: calc(100% - var(--aside-width-mobile));
+  }
+  .overlay:target aside {
+    transform: translateX(calc(var(--aside-width-mobile) * -1));
+  }
+}
 /*
 * --------------------------------------------------
 * components/Header

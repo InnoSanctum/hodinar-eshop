@@ -1,4 +1,4 @@
-import {Await,  useMatches} from '@remix-run/react';
+import {Await, useMatches} from '@remix-run/react';
 import {Suspense, useContext} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
@@ -69,12 +69,12 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-20 relative">
       <VojtikNavLink prefetch="intent" to={'/'} style={activeLinkStyle} end>
         <span className="flex items-center gap-4 font-title">
-          <Image 
-             src={shop.brand?.logo?.image?.url}
-            sizes="1rem"
+          <Image
+            src={shop.brand?.logo?.image?.url}
+            sizes=" 1rem"
             className="h-8"
           />
-          <strong className="self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary">
+          <strong className="self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary hidden sm:block">
             {shop.name}
           </strong>
         </span>
