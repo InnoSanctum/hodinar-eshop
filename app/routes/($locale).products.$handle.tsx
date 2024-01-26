@@ -164,6 +164,7 @@ export default function Product() {
     useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   const size = useWindowSize();
+  console.log(product)
   return (
     <div className="flex flex-col gap-8">
       <div className="product">
@@ -475,7 +476,7 @@ const PRODUCT_FRAGMENT = `#graphql
         }
       }
     }
-    images(first: 20) {
+    images(first: 200) {
       nodes {
         id
         url
@@ -484,6 +485,36 @@ const PRODUCT_FRAGMENT = `#graphql
         height
       }
     }
+    
+    media(first: 10) {
+      edges {
+        node {
+          ... on MediaImage {
+            alt
+            image {
+              url
+              width
+              height
+            }
+          }
+          ... on Video {
+            id
+            previewImage {
+              url
+            }
+            sources {
+              format
+              height
+              mimeType
+              url
+              width
+            }
+          }
+        }
+      }
+    }
+
+
     options {
       name
       values

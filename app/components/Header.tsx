@@ -39,11 +39,7 @@ function LanguagesList({
   languages: I18nLocale[];
   activeLanguage: I18nLocale;
 }) {
-  // console.log(storefront.i18n);
 
-  // console.log(useMatches())
-  // const selectedLocale = root[1].data.selectedLocale;
-  // console.log(activeLanguage,selectedLocale)
 
   const flags = {CS, EN};
   return (
@@ -65,7 +61,6 @@ function LanguagesList({
 }
 export function Header({header, isLoggedIn, cart}: HeaderProps) {
   const {shop, menu} = header;
-  console.log(shop);
   return (
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-20 relative">
       <VojtikNavLink prefetch="intent" to={'/'} style={activeLinkStyle} end>
@@ -186,7 +181,6 @@ function SearchToggle() {
 }
 
 function CartBadge({count}: {count: number}) {
-  // console.log(cart)
   return (
     <a href="#cart-aside" className="inline-flex gap-2 items-center">
       <img src={cart} className="h-4" /> {count}
@@ -253,7 +247,7 @@ export function Call() {
   const number = '+420 608 211 665';
   return (
     <a href={`tel:${number}`} className='h-8 flex gap-2 items-center'>
-      <img src={phone} className='h-6' />
+      <img src={phone} className='h-6' /><p className='hidden lg:block'>Potřebujete poradit?</p>
       <p>{number}</p>
     </a>
   );

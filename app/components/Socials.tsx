@@ -16,6 +16,7 @@ export default function Socials() {
     },
     {url: 'https://www.tiktok.com/@atelierpryimak', icon: tiktok},
     {url: 'https://pin.it/TLGCJC9', icon: pinterest},
+    {url: 'https://www.youtube.com/@Atelier_Pryimak', icon: youtube},
   ];
   return (
     <ul className="flex flex-wrap gap-4 h-6">
