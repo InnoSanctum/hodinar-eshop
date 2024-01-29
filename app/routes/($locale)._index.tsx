@@ -83,7 +83,14 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
                             "after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-secondary after:left-0 after:rounded-sm after:bottom-0",
                           )}
                         >
-                          <h4>{product.title}</h4>
+                          <h4
+                            style={{
+                              WebkitTextStrokeWidth: 1,
+                              WebkitTextStrokeColor: 'black',
+                            }}
+                          >
+                            {product.title}
+                          </h4>
                         </span>
                         <VojtikLink
                           key={product.id}
@@ -98,7 +105,7 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
                           <Image
                             sizes="(min-width: 45em) 60vw, 50vw"
                             data={product.images.nodes[0]}
-                            className="rounded-lg w-full h-full object-cover opacity-30 md:opacity-100"
+                            className="rounded-lg w-full h-full object-cover"
                           />
                         </figure>
                       </div>

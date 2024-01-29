@@ -84,6 +84,8 @@ const CS: Language = {
   discount: 'Sleva/y',
   discount_code: 'Slevový kód',
   quantity: 'Množství',
+  help: 'Potřebujete poradit?',
+  home: 'Domů',
 };
 const EN: Language = {
   buttons: {
@@ -119,6 +121,8 @@ const EN: Language = {
   discount: 'Discount(s)',
   discount_code: 'Discount code',
   quantity: 'Quantity',
+  help: 'Do you need advice?',
+  home: 'Home',
 };
 
 export function useLanguage(/* language:I18nLocale */): Language {
@@ -162,6 +166,8 @@ export interface Language {
   discount: string;
   discount_code: string;
   quantity: string;
+  help: string;
+  home: string;
 }
 
 export interface Buttons {

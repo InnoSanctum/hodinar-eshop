@@ -12,8 +12,9 @@ import {VojtikContext} from './custom/VojtikContext';
 import VojtikNavLink from './custom/VojtikNavLink';
 // import '/node_modules/flag-icons/css/flag-icons.min.css';
 // import "../styles/flags.css";
-import CS from '../../public/assets/flags/4x3/cz.svg';
-import EN from '../../public/assets/flags/4x3/us.svg';
+import EN from '../../public/assets/flags/4x3/cz.svg';
+import CS from '../../public/assets/flags/4x3/us.svg';
+import {useLanguage} from '~/utils';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
@@ -39,8 +40,6 @@ function LanguagesList({
   languages: I18nLocale[];
   activeLanguage: I18nLocale;
 }) {
-
-
   const flags = {CS, EN};
   return (
     <div className="flex gap-4 flex-wrap">
@@ -96,7 +95,7 @@ export function HeaderMenu({
 }) {
   const {publicStoreDomain} = useRootLoaderData();
   const className = `header-menu-${viewport}`;
-
+  const language = useLanguage();
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
     if (viewport === 'mobile') {
       event.preventDefault();
@@ -114,7 +113,7 @@ export function HeaderMenu({
           style={activeLinkStyle}
           to={'/'}
         >
-          Home
+          {language.home}
         </VojtikNavLink>
       )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
@@ -153,7 +152,9 @@ function HeaderCtas({
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <div className='hidden md:block'><Call /></div>
+      <div className="hidden md:block">
+        <Call />
+      </div>
       <LanguagesList languages={languages} activeLanguage={context.language} />
       <VojtikNavLink prefetch="intent" to={'/account'} style={activeLinkStyle}>
         {isLoggedIn ? 'Account' : <img src={user} className="h-4" />}
@@ -245,9 +246,11 @@ const FALLBACK_HEADER_MENU = {
 
 export function Call() {
   const number = '+420 608 211 665';
+  const language = useLanguage();
   return (
-    <a href={`tel:${number}`} className='h-8 flex gap-2 items-center'>
-      <img src={phone} className='h-6' /><p className='hidden lg:block'>Potřebujete poradit?</p>
+    <a href={`tel:${number}`} className="h-8 flex gap-2 items-center">
+      <p className="hidden lg:block">{language.help}</p>
+      <img src={phone} className="h-6" />
       <p>{number}</p>
     </a>
   );
