@@ -22,6 +22,7 @@ import clsx from 'clsx';
 import Button from '~/components/Button';
 import VojtikLink from '../components/custom/VojtikLink';
 import {useLanguage} from '~/utils';
+import Loading from '~/components/Loading';
 
 export const meta: MetaFunction = () => {
   return [{title: 'ATELIÉR PRYIMAK'}];
@@ -52,14 +53,14 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
   const language = useLanguage();
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading/>}>
         <Await resolve={products}>
           {({products}) => (
             <Swiper
               modules={[Pagination, Scrollbar, A11y, Autoplay]}
               spaceBetween={50}
               slidesPerView={1}
-              className="w-full bg-primary md:bg-transparent"
+              className="w-full"
               navigation
               loop
               speed={1500}
@@ -75,22 +76,15 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
               {products.nodes.map((product) => (
                 <SwiperSlide key={product.id}>
                   <div className="xl:w-3/4 m-auto">
-                    <article className="md:grid grid-cols-2 gap-4 md:gap-8 lg:gap-16 h-[80vh] relative">
-                      <div className="z-10 md:z-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:static flex flex-col justify-center items-end gap-8">
+                    <article className="grid grid-cols-2 gap-4 md:gap-8 lg:gap-16 h-[80vh] relative">
+                      <div className="z-10 md:z-0  top-1/2 left-1/2 static flex flex-col justify-center items-end gap-8">
                         <span
                           className={clsx(
                             'max-w-lg text-end relative pb-4',
                             "after:content-[''] after:absolute after:w-full after:h-[2px] after:bg-secondary after:left-0 after:rounded-sm after:bottom-0",
                           )}
                         >
-                          <h4
-                            style={{
-                              WebkitTextStrokeWidth: 1,
-                              WebkitTextStrokeColor: 'black',
-                            }}
-                          >
-                            {product.title}
-                          </h4>
+                          <h4>{product.title}</h4>
                         </span>
                         <VojtikLink
                           key={product.id}
