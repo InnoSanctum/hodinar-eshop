@@ -99,7 +99,7 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
                           <Image
                             sizes="(min-width: 45em) 60vw, 50vw"
                             data={product.images.nodes[0]}
-                            className="rounded-lg w-full h-full object-cover opacity-30 md:opacity-100"
+                            className="rounded-lg w-full h-full object-cover opacity-50 md:opacity-100"
                           />
                         </figure>
                       </div>
