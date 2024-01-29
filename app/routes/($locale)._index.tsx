@@ -53,14 +53,14 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
   const language = useLanguage();
   return (
     <div>
-      <Suspense fallback={<Loading/>}>
+      <Suspense fallback={<Loading />}>
         <Await resolve={products}>
           {({products}) => (
             <Swiper
               modules={[Pagination, Scrollbar, A11y, Autoplay]}
               spaceBetween={50}
               slidesPerView={1}
-              className="w-full"
+              className="w-full bg-primary md:bg-transparent"
               navigation
               loop
               speed={1500}
@@ -76,8 +76,8 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
               {products.nodes.map((product) => (
                 <SwiperSlide key={product.id}>
                   <div className="xl:w-3/4 m-auto">
-                    <article className="grid grid-cols-2 gap-4 md:gap-8 lg:gap-16 h-[80vh] relative">
-                      <div className="z-10 md:z-0  top-1/2 left-1/2 static flex flex-col justify-center items-end gap-8">
+                    <article className="md:grid grid-cols-2 gap-4 md:gap-8 lg:gap-16 h-[80vh] relative">
+                      <div className="z-10 md:z-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:translate-x-0 md:translate-y-0 md:static flex flex-col justify-center items-end gap-8">
                         <span
                           className={clsx(
                             'max-w-lg text-end relative pb-4',
@@ -99,7 +99,7 @@ function Hero({products}: {products: Promise<RecommendedProductsQuery>}) {
                           <Image
                             sizes="(min-width: 45em) 60vw, 50vw"
                             data={product.images.nodes[0]}
-                            className="rounded-lg w-full h-full object-cover"
+                            className="rounded-lg w-full h-full object-cover opacity-30 md:opacity-100"
                           />
                         </figure>
                       </div>
