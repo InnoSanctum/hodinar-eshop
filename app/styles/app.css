@@ -32,6 +32,12 @@
   background: #555; 
 }
 
+@media (min-width: 1024px) {
+ .filter__height{
+  height: calc(100vh - 5rem);
+ }
+}
+
 h1 {
   max-width: 32rem;
   font-size: 2.75rem /* 60px */;

@@ -204,7 +204,7 @@ function Filters({
   return (
     <div>
       <div className=" lg:sticky lg:top-20">
-        <div className="lg:h-screen overflow-scroll">
+        <div className="filter__height overflow-y-scroll">
           {language.filters.filter}:
           <div className="p-4 border-t-2 border-secondary flex flex-wrap gap-4 lg:flex-col lg:min-w-56">
             <h4>{language.filters.availability}</h4>
