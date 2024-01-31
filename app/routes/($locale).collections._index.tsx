@@ -24,7 +24,6 @@ export async function loader({context, request}: LoaderFunctionArgs) {
   });
   const url = new URL(request.url);
   const data = url.searchParams.get('filters');
-  console.log(url, data);
   const filtersUrl: Filter | null = data && JSON.parse(data);
   return json({collections, products, filtersUrl, href: url.href});
 }
@@ -59,9 +58,7 @@ export default function Collections() {
     )}`;
   }
   useEffect(() => {
-    console.log(href);
     const newUrl = createUrl();
-    console.log(newUrl);
     if (href !== newUrl) window.history.pushState({id: 1}, 'xd', newUrl);
   }, [filters]);
   const language = useLanguage();
@@ -93,13 +90,6 @@ function ProductsGrid({
     <AnimatePresence mode="wait">
       <div className="flex flex-wrap justify-start gap-8">
         {products.map((product, index) => {
-          if (filters.brand)
-            console.log(
-              filteredArray(
-                filters.brand,
-                product.collections.nodes.map((e) => e.handle),
-              ),
-            );
           if (filters.price)
             if (
               (filters.price.from &&
@@ -204,7 +194,6 @@ function Filters({
   const styles = collections.filter(
     (collection) => !parseBrand(collection.title),
   );
-  console.log(filters.price);
   function setAvailability(availability: boolean): void {
     filters.availability =
       filters.availability === availability ? undefined : availability;
@@ -331,7 +320,6 @@ function Filters({
                 type="number"
                 className="text-primary bg-secondary"
                 onChange={(e) => {
-                  console.log(e.target.value);
                   filters.price.from = parseInt(e.target.value) || undefined;
                   setFilters({...filters});
                 }}
@@ -342,7 +330,6 @@ function Filters({
                 type="number"
                 className="text-primary bg-secondary"
                 onChange={(e) => {
-                  console.log(e.target.value);
                   filters.price.to = parseInt(e.target.value) || undefined;
                   setFilters({...filters});
                 }}
