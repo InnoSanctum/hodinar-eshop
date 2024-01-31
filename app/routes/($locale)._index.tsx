@@ -24,7 +24,7 @@ import VojtikLink from '../components/custom/VojtikLink';
 import {useLanguage} from '~/utils';
 import Loading from '~/components/Loading';
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: 'ATELIÉR PRYIMAK'}];
 };
 

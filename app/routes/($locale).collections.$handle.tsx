@@ -13,7 +13,7 @@ import VojtikLink from '~/components/custom/VojtikLink';
 import Loading from '~/components/Loading';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `ATELIÉR PRYIMAK | ${data?.collection.title ?? ''} Kolekce`}];
+  return [{title: `ATELIÉR PRYIMAK | ${data?.collection.title ?? ''} Kolekce`,}];
 };
 
 export async function loader({request, params, context}: LoaderFunctionArgs) {

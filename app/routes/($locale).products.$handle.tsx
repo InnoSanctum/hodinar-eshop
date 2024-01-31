@@ -55,6 +55,19 @@ import {
 import Button from '~/components/Button';
 import {RecommendedProducts} from './($locale)._index';
 import VojtikLink from '~/components/custom/VojtikLink';
+import {
+  MediaPlayer,
+  MediaProvider,
+  type MediaPlayerProps,
+} from '@vidstack/react';
+import {
+  DefaultAudioLayout,
+  defaultLayoutIcons,
+  DefaultVideoLayout,
+} from '@vidstack/react/player/layouts/default';
+import '@vidstack/react/player/styles/base.css';
+import {PlayIcon} from '@vidstack/react/icons';
+import ReactPlayer from 'react-player/lazy';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Ateliér Pryimak | ${data?.product.title ?? ''}`}];
@@ -164,24 +177,33 @@ export default function Product() {
     useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   const size = useWindowSize();
-  console.log(product)
+
   return (
     <div className="flex flex-col gap-8">
       <div className="product">
         {size.width && size.width >= 720 ? (
-          <LightGallery
-            speed={500}
-            plugins={[lgThumbnail, lgZoom]}
-            elementClassNames=" flex flex-col gap-4"
-          >
-            {product.images.nodes.map((image, i) => {
+          <div className=' flex flex-col gap-4"'>
+            <LightGallery
+              speed={500}
+              plugins={[lgThumbnail, lgZoom]}
+              elementClassNames=" flex flex-col gap-4"
+            >
+              {product.media.edges.map((image, i) => {
+                return (
+                  <a key={i} href={image.url}>
+                    <ProductImage image={image} />
+                  </a>
+                );
+              })}
+            </LightGallery>
+            {product.media.edges.map((image, i) => {
               return (
-                <a key={i} href={image.url}>
-                  <ProductImage image={image} />
-                </a>
+                <div key={i}>
+                  <ProductVideo image={image} />
+                </div>
               );
             })}
-          </LightGallery>
+          </div>
         ) : (
           <Swiper
             modules={[Pagination, Scrollbar, A11y, Autoplay]}
@@ -200,9 +222,12 @@ export default function Product() {
               } as any
             }
           >
-            {product.images.nodes.map((image, i) => (
+            {product.media.edges.map((image, i) => (
               <SwiperSlide key={i}>
                 <ProductImage image={image} />
+                <div className="h-full flex items-center">
+                  <ProductVideo image={image} />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -220,23 +245,53 @@ export default function Product() {
   );
 }
 
+function ProductVideo({image}: {image: ProductVariantFragment['image']}) {
+  if (!image) {
+    return <div className="product-image" />;
+  }
+  if (image?.node?.mediaContentType === 'VIDEO')
+    return (
+      <div>
+        <ReactPlayer
+          url={image?.node?.sources[0].url}
+          width="640"
+          height="360"
+          controls
+        />
+        {/* xddd
+        <video>
+          <source src={image?.node?.sources[0].url} type="video/mp4" />
+        </video> */}
+        {/* <MediaPlayer src={image?.node?.sources[0].url} >
+          <MediaProvider />
+          <DefaultAudioLayout icons={defaultLayoutIcons} />
+          <DefaultVideoLayout icons={defaultLayoutIcons} />
+          <PlayIcon size={40} />
+        </MediaPlayer> */}
+      </div>
+    );
+  return null;
+}
+
 function ProductImage({image}: {image: ProductVariantFragment['image']}) {
   if (!image) {
     return <div className="product-image" />;
   }
-  return (
-    <div className="product-image">
-      <Image
-        alt={image.altText || 'Product Image'}
-        aspectRatio="1/1"
-        data={image}
-        key={image.id}
-        loading="lazy"
-        className="object-cover"
-        sizes="(min-width: 45em) 50vw, 100vw"
-      />
-    </div>
-  );
+  if (image?.node?.mediaContentType === 'IMAGE')
+    return (
+      <div className="product-image">
+        <Image
+          alt={image?.node?.altText || 'Product Image'}
+          aspectRatio="1/1"
+          data={image.node.image}
+          key={image.node.image.id}
+          loading="lazy"
+          className="object-cover"
+          sizes="(min-width: 45em) 50vw, 100vw"
+        />
+      </div>
+    );
+  return null;
 }
 
 function ProductMain({
@@ -294,11 +349,12 @@ function ProductPrice({
 }: {
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
+  const language = useLanguage();
   return (
     <div className="product-price">
       {selectedVariant?.compareAtPrice ? (
         <>
-          <p>Sale</p>
+          <p>{language.sale}</p>
           <br />
           <div className="product-price-on-sale">
             {selectedVariant ? <Money data={selectedVariant.price} /> : null}
@@ -476,23 +532,17 @@ const PRODUCT_FRAGMENT = `#graphql
         }
       }
     }
-    images(first: 200) {
-      nodes {
-        id
-        url
-        altText
-        width
-        height
-      }
-    }
     
     media(first: 10) {
       edges {
-        node {
+        node { 
+          mediaContentType
           ... on MediaImage {
             alt
             image {
+              id
               url
+              altText
               width
               height
             }
@@ -513,7 +563,6 @@ const PRODUCT_FRAGMENT = `#graphql
         }
       }
     }
-
 
     options {
       name

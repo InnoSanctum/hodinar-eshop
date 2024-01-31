@@ -1407,6 +1407,29 @@ export type ProductFragment = Pick<
       Pick<StorefrontAPI.Image, 'id' | 'url' | 'altText' | 'width' | 'height'>
     >;
   };
+  media: {
+    edges: Array<{
+      node:
+        | Pick<StorefrontAPI.ExternalVideo, 'mediaContentType'>
+        | (Pick<StorefrontAPI.MediaImage, 'alt' | 'mediaContentType'> & {
+            image?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'url' | 'width' | 'height'>
+            >;
+          })
+        | Pick<StorefrontAPI.Model3d, 'mediaContentType'>
+        | (Pick<StorefrontAPI.Video, 'id' | 'mediaContentType'> & {
+            previewImage?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.Image, 'url'>
+            >;
+            sources: Array<
+              Pick<
+                StorefrontAPI.VideoSource,
+                'format' | 'height' | 'mimeType' | 'url' | 'width'
+              >
+            >;
+          });
+    }>;
+  };
   options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values'>>;
   selectedVariant?: StorefrontAPI.Maybe<
     Pick<
@@ -1488,6 +1511,29 @@ export type ProductQuery = {
             'id' | 'url' | 'altText' | 'width' | 'height'
           >
         >;
+      };
+      media: {
+        edges: Array<{
+          node:
+            | Pick<StorefrontAPI.ExternalVideo, 'mediaContentType'>
+            | (Pick<StorefrontAPI.MediaImage, 'alt' | 'mediaContentType'> & {
+                image?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Image, 'url' | 'width' | 'height'>
+                >;
+              })
+            | Pick<StorefrontAPI.Model3d, 'mediaContentType'>
+            | (Pick<StorefrontAPI.Video, 'id' | 'mediaContentType'> & {
+                previewImage?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Image, 'url'>
+                >;
+                sources: Array<
+                  Pick<
+                    StorefrontAPI.VideoSource,
+                    'format' | 'height' | 'mimeType' | 'url' | 'width'
+                  >
+                >;
+              });
+        }>;
       };
       options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values'>>;
       selectedVariant?: StorefrontAPI.Maybe<
@@ -1770,6 +1816,18 @@ export type StoreRobotsQueryVariables = StorefrontAPI.Exact<{
 
 export type StoreRobotsQuery = {shop: Pick<StorefrontAPI.Shop, 'id'>};
 
+export type CartBuyerIdentityUpdateMutationVariables = StorefrontAPI.Exact<{
+  cartId: StorefrontAPI.Scalars['ID']['input'];
+  buyerIdentity: StorefrontAPI.CartBuyerIdentityInput;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+}>;
+
+export type CartBuyerIdentityUpdateMutation = {
+  cartBuyerIdentityUpdate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Cart, 'id'>>;
+  }>;
+};
+
 export type MoneyFragment = Pick<
   StorefrontAPI.MoneyV2,
   'currencyCode' | 'amount'
@@ -1941,7 +1999,7 @@ interface GeneratedQueryTypes {
     return: PoliciesQuery;
     variables: PoliciesQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    collections(first: 10){\n      edges{\n        node{\n          title\n          handle\n        }\n      }\n    }\n    images(first: 20) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    options {\n      name\n      values\n    }\n    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    variants(first: 1) {\n      nodes {\n        ...ProductVariant\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    \n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    collections(first: 10){\n      edges{\n        node{\n          title\n          handle\n        }\n      }\n    }\n    images(first: 200) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    \n    media(first: 10) {\n      edges {\n        node { \n          mediaContentType\n          ... on MediaImage {\n            alt\n            image {\n              url\n              width\n              height\n            }\n          }\n          ... on Video {\n            id\n            previewImage {\n              url\n            }\n            sources {\n              format\n              height\n              mimeType\n              url\n              width\n            }\n          }\n        }\n      }\n    }\n\n\n    options {\n      name\n      values\n    }\n    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    variants(first: 1) {\n      nodes {\n        ...ProductVariant\n      }\n    }\n    seo {\n      description\n      title\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    \n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };
@@ -2007,6 +2065,10 @@ interface GeneratedMutationTypes {
   '#graphql\n  mutation customerReset(\n    $id: ID!,\n    $input: CustomerResetInput!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    customerReset(id: $id, input: $input) {\n      customerAccessToken {\n        accessToken\n        expiresAt\n      }\n      customerUserErrors {\n        code\n        field\n        message\n      }\n    }\n  }\n': {
     return: CustomerResetMutation;
     variables: CustomerResetMutationVariables;
+  };
+  '#graphql\n  mutation CartBuyerIdentityUpdate(\n    $cartId: ID!\n    $buyerIdentity: CartBuyerIdentityInput!\n    $country: CountryCode = ZZ\n  ) @inContext(country: $country) {\n    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {\n      cart {\n        id\n      }\n    }\n  }\n': {
+    return: CartBuyerIdentityUpdateMutation;
+    variables: CartBuyerIdentityUpdateMutationVariables;
   };
 }
 

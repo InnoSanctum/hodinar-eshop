@@ -86,6 +86,7 @@ const CS: Language = {
   quantity: 'Množství',
   help: 'Potřebujete poradit?',
   home: 'Domů',
+  sale: 'Sleva',
 };
 const EN: Language = {
   buttons: {
@@ -123,6 +124,7 @@ const EN: Language = {
   quantity: 'Quantity',
   help: 'Do you need advice?',
   home: 'Home',
+  sale: 'Sale',
 };
 
 export function useLanguage(/* language:I18nLocale */): Language {
@@ -168,6 +170,7 @@ export interface Language {
   quantity: string;
   help: string;
   home: string;
+  sale: string;
 }
 
 export interface Buttons {
