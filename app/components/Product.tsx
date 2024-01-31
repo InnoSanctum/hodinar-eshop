@@ -44,12 +44,13 @@ export default function Product({
       <div className="w-full max-w-sm rounded-lg shadow bg-primary transition-all hover:drop-shadow-2xl hover:z-10 hover:-translate-y-2 overflow-hidden">
         <div className="hover:bg-secondary/5 transition-all">
           <div className="relative">
-            <div className="p-4 m-auto">
+            <div className="p-4 m-auto w-full h-full">
               <Image
                 data={product.images.nodes[0]}
                 aspectRatio="1/1"
                 sizes="(min-width: 45em) 20vw, 50vw"
                 loading={loading}
+                className="w-full h-full"
               />
             </div>
             <div className="absolute top-0 w-full">

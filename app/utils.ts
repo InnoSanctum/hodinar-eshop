@@ -67,6 +67,17 @@ const CS: Language = {
     continue: 'Pokračovat v nákupu',
     checkout: 'Pokračujte k pokladně',
   },
+  filters: {
+    availability: 'Dostupnost',
+    clockwork: 'Strojek',
+    from: 'Od',
+    to: 'Do',
+    price: 'Cena',
+    style: 'Styl',
+    filter: 'Filtry',
+    avaible: 'Skladem',
+    sold: 'Prodáno',
+  },
   totals: 'Soušty',
   collections: 'Kolekce',
   subtotal: 'Mezisoučet',
@@ -104,6 +115,17 @@ const EN: Language = {
     text: "Looks like you haven't added anything yet, let's get you started!",
     continue: 'Continue shopping',
     checkout: 'Continue to Checkout',
+  },
+  filters: {
+    availability: 'Availability',
+    clockwork: 'Clockwork',
+    from: 'From',
+    to: 'To',
+    price: 'Price',
+    style: 'Style',
+    filter: 'Filters',
+    avaible: 'Avaible',
+    sold: 'Sold',
   },
   totals: 'Totals',
   collections: 'Collections',
@@ -151,6 +173,7 @@ export function useLanguage(/* language:I18nLocale */): Language {
 export interface Language {
   buttons: Buttons;
   cart: Cart;
+  filters: Filters;
   totals: string;
   subtotal: string;
   description: string;
@@ -188,6 +211,17 @@ interface Cart {
   text: string;
   continue: string;
   checkout: string;
+}
+interface Filters {
+  availability: string;
+  style: string;
+  price: string;
+  clockwork: string;
+  from: string;
+  to: string;
+  filter: string;
+  avaible: string;
+  sold: string;
 }
 
 export function usePrefixPathWithLocale(path: string): string {

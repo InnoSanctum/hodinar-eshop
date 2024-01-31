@@ -13,7 +13,7 @@ import VojtikLink from '~/components/custom/VojtikLink';
 import Loading from '~/components/Loading';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `ATELIÉR PRYIMAK | ${data?.collection.title ?? ''} Kolekce`,}];
+  return [{title: `ATELIÉR PRYIMAK | ${data?.collection.title ?? ''} Kolekce`}];
 };
 
 export async function loader({request, params, context}: LoaderFunctionArgs) {
@@ -82,7 +82,7 @@ function ProductsGrid({products}: {products: ProductItemFragment[]}) {
       {products.map((product, index) => {
         return (
           <>
-            <Product
+            <Product  
               key={product.id}
               product={product}
               loading={index < 8 ? 'eager' : undefined}
