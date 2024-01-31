@@ -160,8 +160,10 @@ function parseBrand(string: string): string {
 function FilterSection({
   name,
   children,
+  active,
 }: {
   name: string;
+  active?: number;
   children: ReactElement;
 }) {
   const [isOpen, setOpenState] = useState(false);
@@ -171,7 +173,9 @@ function FilterSection({
         onClick={() => setOpenState(!isOpen)}
         className="flex justify-between cursor-pointer w-full"
       >
-        <h4>{name}</h4>
+        <h4>
+          {name} {active && active > 0 ? `(${active})` : null}
+        </h4>
         <img
           style={{transform: `rotate(${isOpen ? -90 : 90}deg)`}}
           className="h-6 transition-all"
@@ -255,7 +259,10 @@ function Filters({
       <div className=" lg:sticky lg:top-20">
         <div className="filter__height overflow-y-scroll">
           <h3>{language.filters.filter}:</h3>
-          <FilterSection name={language.filters.availability}>
+          <FilterSection
+            active={filters.availability !== undefined ? 1 : 0}
+            name={language.filters.availability}
+          >
             <>
               <span>
                 <input
@@ -291,7 +298,10 @@ function Filters({
               </span>
             </>
           </FilterSection>
-          <FilterSection name={language.filters.style}>
+          <FilterSection
+            active={filters.style?.length}
+            name={language.filters.style}
+          >
             <>
               {styles.map((style, index) => {
                 return (
@@ -339,7 +349,10 @@ function Filters({
               />
             </>
           </FilterSection>
-          <FilterSection name={language.filters.clockwork}>
+          <FilterSection
+            active={filters.brand?.length}
+            name={language.filters.clockwork}
+          >
             <>
               {brands.map((brand, index) => {
                 return (
