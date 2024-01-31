@@ -41,7 +41,7 @@ export async function loader({request, params, context}: LoaderFunctionArgs) {
 
 export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
-const language = useLanguage()
+  const language = useLanguage();
   return (
     <div className="collection">
       <h1>{collection.title}</h1>
@@ -50,12 +50,24 @@ const language = useLanguage()
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
             <PreviousLink>
-              {isLoading ? <Loading/> : <span>↑ {language.load} {language.buttons.previous}</span>}
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <span>
+                  ↑ {language.load} {language.buttons.previous}
+                </span>
+              )}
             </PreviousLink>
             <ProductsGrid products={nodes} />
             <br />
             <NextLink>
-              {isLoading ? <Loading/> : <span>{language.load} {language.buttons.more} ↓</span>}
+              {isLoading ? (
+                <Loading />
+              ) : (
+                <span>
+                  {language.load} {language.buttons.more} ↓
+                </span>
+              )}
             </NextLink>
           </>
         )}
@@ -66,7 +78,7 @@ const language = useLanguage()
 
 function ProductsGrid({products}: {products: ProductItemFragment[]}) {
   return (
-    <div className="products-grid">
+    <div className="flex flex-wrap justify-start gap-8">
       {products.map((product, index) => {
         return (
           <>
@@ -97,7 +109,8 @@ function ProductItem({
   const variant = product.variants.nodes[0];
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
   return (
-    <VojtikLink      className="product-item"
+    <VojtikLink
+      className="product-item"
       key={product.id}
       prefetch="intent"
       to={variantUrl}
