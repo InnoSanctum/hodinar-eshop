@@ -178,7 +178,7 @@ function FilterSection({
           src={arrow}
         />
       </span>
-      {isOpen&&<>{children}</>}
+      {isOpen && <>{children}</>}
     </div>
   );
 }
@@ -254,7 +254,7 @@ function Filters({
     <div>
       <div className=" lg:sticky lg:top-20">
         <div className="filter__height overflow-y-scroll">
-          {language.filters.filter}:
+          <h3>{language.filters.filter}:</h3>
           <FilterSection name={language.filters.availability}>
             <>
               <span>
