@@ -82,7 +82,7 @@ function ProductsGrid({products}: {products: ProductItemFragment[]}) {
       {products.map((product, index) => {
         return (
           <>
-            <Product
+            <Product 
               key={product.id}
               product={product}
               loading={index < 8 ? 'eager' : undefined}
