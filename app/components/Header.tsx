@@ -211,7 +211,7 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
             src={shop.brand?.logo?.image?.url}
             sizes="1rem"
             width={27}
-            className="h-8"
+            className="h-8 w-[27px]"
           />
           <strong className="self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary hidden sm:block">
             {shop.name}
