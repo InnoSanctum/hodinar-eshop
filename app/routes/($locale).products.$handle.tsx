@@ -26,7 +26,7 @@ import type {
   SelectedOption,
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl, useLanguage} from '~/utils';
-import "../styles/normalize.css"
+import '../styles/normalize.css';
 
 import LightGallery from 'lightgallery/react';
 
@@ -178,6 +178,7 @@ export default function Product() {
               elementClassNames=" flex flex-col gap-4"
             >
               {product.media.edges.map((image, i) => {
+                if (image.node.mediaContentType === 'VIDEO') return null;
                 return (
                   <a key={i} href={image.node.image.url}>
                     <ProductImage image={image} />
@@ -317,7 +318,10 @@ function ProductMain({
         <strong>{language.description}</strong>
       </h4>
       <br />
-      <div className='text' dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+      <div
+        className="text"
+        dangerouslySetInnerHTML={{__html: descriptionHtml}}
+      />
       <br />
     </div>
   );
