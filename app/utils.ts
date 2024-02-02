@@ -100,6 +100,8 @@ const CS: Language = {
   sale: 'Sleva',
   currency: 'Měna',
   language: 'Jazyk',
+  shipping: 'Můžeme doručit do',
+  week: 'Týdny',shippingOptions:"Možnosti doručení"
 };
 const EN: Language = {
   buttons: {
@@ -151,6 +153,9 @@ const EN: Language = {
   help: 'Do you need advice?',
   home: 'Home',
   sale: 'Sale',
+  week: 'Weeks',
+  shipping: 'We can deliver by',
+  shippingOptions: 'Delivery options',
 };
 
 export function useLanguage(/* language:I18nLocale */): Language {
@@ -200,6 +205,9 @@ export interface Language {
   sale: string;
   language: string;
   currency: string;
+  week: string;
+  shipping: string;
+  shippingOptions: string;
 }
 
 export interface Buttons {

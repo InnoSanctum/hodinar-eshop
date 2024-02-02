@@ -57,6 +57,7 @@ import Button from '~/components/Button';
 import {RecommendedProducts} from './($locale)._index';
 import VojtikLink from '~/components/custom/VojtikLink';
 import ReactPlayer from 'react-player/lazy';
+import delivery from '../../public/assets/svgs/fast-delivery.svg';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Ateliér Pryimak | ${data?.product.title ?? ''}`}];
@@ -274,6 +275,22 @@ function ProductImage({image}: {image: ProductVariantFragment['image']}) {
   return null;
 }
 
+function Delivery() {
+  const date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 14);
+  const language = useLanguage();
+  return (
+    <div>
+      <span className="text-lg">1-2 {language.week}</span>
+      <br />
+      <span>{language.shipping}:</span>
+      <time>
+        {' '}
+        {date.getUTCDate()}.{date.getUTCMonth() + 1}.{date.getUTCFullYear()}
+      </time>
+    </div>
+  );
+}
+
 function ProductMain({
   selectedVariant,
   product,
@@ -299,6 +316,7 @@ function ProductMain({
           />
         }
       >
+        <Delivery />
         <Await
           errorElement="There was a problem loading product variants"
           resolve={variants}
@@ -313,11 +331,16 @@ function ProductMain({
         </Await>
       </Suspense>
       <br />
+      <VojtikLink to={'/policies/shipping-policy'}>
+        <span className=" flex flex-wrap gap-3">
+          <img src={delivery} className="h-6" />
+          {language.shippingOptions}
+        </span>
+      </VojtikLink>
       <br />
       <h4>
         <strong>{language.description}</strong>
       </h4>
-      <br />
       <div
         className="text"
         dangerouslySetInnerHTML={{__html: descriptionHtml}}

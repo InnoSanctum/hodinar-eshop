@@ -4,6 +4,7 @@ import {Link} from '@remix-run/react';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useLanguage, useVariantUrl} from '~/utils';
 import VojtikLink from './custom/VojtikLink';
+import {useState} from 'react';
 
 type CartLine = CartApiQueryFragment['lines']['nodes'][0];
 
@@ -27,16 +28,25 @@ export function CartMain({layout, cart}: CartMainProps) {
   );
 }
 
+function Consent({setAgreed}: {setAgreed: () => boolean}) {
+  return (
+    <p>
+      Dokončením objednávky souhlasíte s našimi{' '}
+      <VojtikLink to={'/policies'}>obchodními podmínkami</VojtikLink>.
+    </p>
+  );
+}
+
 function CartDetails({layout, cart}: CartMainProps) {
   const cartHasItems = !!cart && cart.totalQuantity > 0;
-
+  const [agreed, setAgreed] = useState<boolean>(false);
   return (
     <div className="cart-details">
       <CartLines lines={cart?.lines} layout={layout} />
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
-          <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+          <CartCheckoutActions agreed={agreed} checkoutUrl={cart.checkoutUrl} />
         </CartSummary>
       )}
     </div>
@@ -118,7 +128,13 @@ function CartLineItem({
   );
 }
 
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl: string}) {
+function CartCheckoutActions({
+  checkoutUrl,
+  agreed,
+}: {
+  checkoutUrl: string;
+  agreed: boolean;
+}) {
   if (!checkoutUrl) return null;
   const language = useLanguage();
   return (
@@ -142,7 +158,7 @@ export function CartSummary({
 }) {
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
-    const language = useLanguage();
+  const language = useLanguage();
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
@@ -180,10 +196,12 @@ function CartLineQuantity({line}: {line: CartLine}) {
   const {id: lineId, quantity} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
-const language =useLanguage()
+  const language = useLanguage();
   return (
     <div className="cart-line-quantiy">
-      <small>{language.quantity}: {quantity} &nbsp;&nbsp;</small>
+      <small>
+        {language.quantity}: {quantity} &nbsp;&nbsp;
+      </small>
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
           aria-label="Decrease quantity"
