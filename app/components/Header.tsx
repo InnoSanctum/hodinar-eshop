@@ -135,7 +135,7 @@ function LanguagesList({
         ></div>
       )}
       {isOpen && (
-        <div className=" bg-secondary text-primary p-2 py-1 rounded-md absolute translate-y-4 flex flex-col gap-2">
+        <div className="min-w-full bg-secondary text-primary p-2 py-1 rounded-md absolute translate-y-4 flex flex-col gap-2">
           <div>
             <h4>{languageText.language}</h4>
             <span className="flex gap-4">
