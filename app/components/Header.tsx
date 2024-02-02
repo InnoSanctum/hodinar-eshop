@@ -28,7 +28,7 @@ export const languages: I18nLocale[] = [
   {
     country: 'CZ',
     language: 'CS',
-    pathPrefix: '',
+    pathPrefix: '/',
   },
   {
     country: 'US',
@@ -112,7 +112,7 @@ function LanguagesList({
       icon: EN,
     },
   };
-
+  const languageText = useLanguage();
   return (
     <div className="relative">
       <span
@@ -137,7 +137,7 @@ function LanguagesList({
       {isOpen && (
         <div className=" bg-secondary text-primary p-2 py-1 rounded-md absolute translate-y-4 flex flex-col gap-2">
           <div>
-            <h4>Language</h4>
+            <h4>{languageText.language}</h4>
             <span className="flex gap-4">
               {Object.keys(languageList).map((key, index) => {
                 return (
@@ -157,7 +157,7 @@ function LanguagesList({
             </span>
           </div>
           <div>
-            <h4>Currency</h4>
+            <h4>{languageText.currency}</h4>
             <span className="flex gap-4">
               {Object.keys(currencyList).map((key, index) => {
                 return (
@@ -176,7 +176,7 @@ function LanguagesList({
             </span>
           </div>
           <a href={url} className="p-2 py-1 rounded-md bg-tertiary m-auto">
-            Apply
+            {languageText.buttons.apply}
           </a>
         </div>
       )}

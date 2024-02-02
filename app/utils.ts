@@ -98,6 +98,8 @@ const CS: Language = {
   help: 'Potřebujete poradit?',
   home: 'Domů',
   sale: 'Sleva',
+  currency: 'Měna',
+  language: 'Jazyk',
 };
 const EN: Language = {
   buttons: {
@@ -127,6 +129,8 @@ const EN: Language = {
     avaible: 'Avaible',
     sold: 'Sold',
   },
+  currency: 'Currency',
+  language: 'Language',
   totals: 'Totals',
   collections: 'Collections',
   subtotal: 'Subtotal',
@@ -194,6 +198,8 @@ export interface Language {
   help: string;
   home: string;
   sale: string;
+  language: string;
+  currency: string;
 }
 
 export interface Buttons {
@@ -236,7 +242,10 @@ export function getLocaleFromRequest(request: Request): I18nLocale {
   const url = new URL(request.url);
   const firstPathPart = url.pathname.split('/')[1]?.toUpperCase() ?? '';
   for (let i = 0; i < languages.length; i++) {
-    if (firstPathPart === languages[i].pathPrefix.toUpperCase().replace("/","")) return languages[i];
+    if (
+      firstPathPart === languages[i].pathPrefix.toUpperCase().replace('/', '')
+    )
+      return languages[i];
   }
   return languages[0];
 }
