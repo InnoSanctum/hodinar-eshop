@@ -207,12 +207,13 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
     <header className="header backdrop-blur-2xl bg-primary/50 text-secondary z-20 relative">
       <VojtikNavLink prefetch="intent" to={'/'} style={activeLinkStyle} end>
         <span className="flex items-center gap-4 font-title">
-          <Image
-            src={shop.brand?.logo?.image?.url}
-            sizes="1rem"
-            width={27}
-            className="h-8 w-[27px]"
-          />
+          <figure className="h-8 w-[27px]">
+            <Image
+              src={shop.brand?.logo?.image?.url}
+              sizes="1rem"
+              className="h-full w-full"
+            />
+          </figure>
           <strong className="self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary hidden sm:block">
             {shop.name}
           </strong>

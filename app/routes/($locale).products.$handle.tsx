@@ -400,7 +400,7 @@ function ProductOptions({option}: {option: VariantOption}) {
       <div className="product-options-grid">
         {option.values.map(({value, isAvailable, isActive, to}) => {
           return (
-            <VojtikLink
+            <Link
               className="product-options-item"
               key={option.name + value}
               prefetch="intent"
@@ -413,7 +413,7 @@ function ProductOptions({option}: {option: VariantOption}) {
               }}
             >
               {value}
-            </VojtikLink>
+            </Link>
           );
         })}
       </div>
