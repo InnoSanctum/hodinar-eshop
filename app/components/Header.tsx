@@ -120,8 +120,10 @@ function LanguagesList({
         className="flex gap-2 items-center bg-secondary text-primary p-2 py-1 rounded-md cursor-pointer"
       >
         <img className="h-4" src={languageList[activeLanguage.language].icon} />
-        <span className='hidden xl:inline'>{languageList[activeLanguage.language].name}</span> |{' '}
-        {currencyList[activeLanguage.country].name}
+        <span className="hidden xl:inline">
+          {languageList[activeLanguage.language].name}
+        </span>{' '}
+        | {currencyList[activeLanguage.country].name}
         <img
           style={{transform: `rotate(${isOpen ? -90 : 90}deg)`}}
           className="h-4 transition-all"
@@ -207,7 +209,8 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
         <span className="flex items-center gap-4 font-title">
           <Image
             src={shop.brand?.logo?.image?.url}
-            sizes=" 1rem"
+            sizes="1rem"
+            width={27}
             className="h-8"
           />
           <strong className="self-center sm:text-2xl font-semibold whitespace-nowrap text-tertiary hidden sm:block">
