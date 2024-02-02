@@ -179,7 +179,7 @@ export default function Product() {
             >
               {product.media.edges.map((image, i) => {
                 return (
-                  <a key={i} href={image.url}>
+                  <a key={i} href={image.node.image.url}>
                     <ProductImage image={image} />
                   </a>
                 );
