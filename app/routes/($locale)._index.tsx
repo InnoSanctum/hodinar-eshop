@@ -146,7 +146,7 @@ export function RecommendedProducts({
   return (
     <div className="recommended-products">
       <h2>{language.recommended_products}</h2>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading/>}>
         <Await resolve={products}>
           {({products}) => (
             <div className="flex flex-wrap gap-8 justify-center">
@@ -194,7 +194,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     priceRange {
       minVariantPrice {
         amount
-        currencyCode
+        currencyCode 
       }
     }
     images(first: 2) {

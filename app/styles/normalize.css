@@ -1,0 +1,378 @@
+.text a:link {
+  text-decoration: underline;
+  cursor: auto;
+}
+.text a:visited {
+  text-decoration: underline;
+  cursor: auto;
+}
+
+.text address {
+  display: block;
+  font-style: italic;
+}
+.text area {
+  display: none;
+}
+.text article {
+  display: block;
+}
+.text aside {
+  display: block;
+}
+.text b {
+  font-weight: bold;
+}
+.text bdo {
+  unicode-bidi: bidi-override;
+}
+.text blockquote {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.text body {
+  display: block;
+  margin: 8px;
+}
+.text body:focus {
+  outline: none;
+}
+.text caption {
+  display: table-caption;
+  text-align: center;
+}
+.text cite {
+  font-style: italic;
+}
+.text code {
+  font-family: monospace;
+}
+.text col {
+  display: table-column;
+}
+.text colgroup {
+  display: table-column-group;
+}
+.text datalist {
+  display: none;
+}
+.text dd {
+  display: block;
+  margin-left: 40px;
+}
+.text del {
+  text-decoration: line-through;
+}
+.text details {
+  display: block;
+}
+.text dfn {
+  font-style: italic;
+}
+.text div {
+  display: block;
+}
+.text dl {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+}
+.text dt {
+  display: block;
+}
+.text em {
+  font-style: italic;
+}
+.text embed:focus {
+  outline: none;
+}
+.text fieldset {
+  display: block;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 0.35em;
+  padding-bottom: 0.625em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  border: 2px groove;
+}
+.text figcaption {
+  display: block;
+}
+.text figure {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.text footer {
+  display: block;
+}
+.text form {
+  display: block;
+  margin-top: 0em;
+}
+.text h1 {
+  display: block;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+.text h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+.text h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+.text h4 {
+  display: block;
+  margin-top: 1.33em;
+  margin-bottom: 1.33em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+.text h5 {
+  display: block;
+  font-size: 0.83em;
+  margin-top: 1.67em;
+  margin-bottom: 1.67em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+.text h6 {
+  display: block;
+  font-size: 0.67em;
+  margin-top: 2.33em;
+  margin-bottom: 2.33em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+}
+.text head {
+  display: none;
+}
+.text header {
+  display: block;
+}
+.text hr {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1px;
+}
+.text html {
+  display: block;
+}
+.text html:focus {
+  outline: none;
+}
+.text i {
+  font-style: italic;
+}
+.text iframe:focus {
+  outline: none;
+}
+.text iframe[seamless] {
+  display: block;
+}
+.text img {
+  display: inline-block;
+}
+.text ins {
+  text-decoration: underline;
+}
+.text kbd {
+  font-family: monospace;
+}
+.text label {
+  cursor: default;
+}
+.text legend {
+  display: block;
+  padding-left: 2px;
+  padding-right: 2px;
+  border: none;
+}
+.text li {
+  display: list-item;
+}
+.text link {
+  display: none;
+}
+.text map {
+  display: inline;
+}
+.text mark {
+  background-color: yellow;
+  color: black;
+}
+.text menu {
+  display: block;
+  list-style-type: disc;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 40px;
+}
+.text nav {
+  display: block;
+}
+.text object:focus {
+  outline: none;
+}
+.text ol {
+  display: block;
+  list-style-type: decimal;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 40px;
+}
+.text output {
+  display: inline;
+}
+.text p {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+}
+.text param {
+  display: none;
+}
+.text pre {
+  display: block;
+  font-family: monospace;
+  white-space: pre;
+  margin: 1em 0;
+}
+.text q {
+  display: inline;
+}
+.text q::before {
+  content: open-quote;
+}
+.text q::after {
+  content: close-quote;
+}
+.text rt {
+  line-height: normal;
+}
+.text s {
+  text-decoration: line-through;
+}
+.text samp {
+  font-family: monospace;
+}
+.text script {
+  display: none;
+}
+.text section {
+  display: block;
+}
+.text small {
+  font-size: smaller;
+}
+.text strike {
+  text-decoration: line-through;
+}
+.text strong {
+  font-weight: bold;
+}
+.text style {
+  display: none;
+}
+.text sub {
+  vertical-align: sub;
+  font-size: smaller;
+}
+.text summary {
+  display: block;
+}
+.text sup {
+  vertical-align: super;
+  font-size: smaller;
+}
+.text table {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-color: gray;
+}
+.text tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+.text td {
+  display: table-cell;
+  vertical-align: inherit;
+}
+.text tfoot {
+  display: table-footer-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+.text th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: center;
+}
+.text thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+.text title {
+  display: none;
+}
+.text tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+.text u {
+  text-decoration: underline;
+}
+.text ul {
+  display: block;
+  list-style-type: disc;
+  margin-top: 1em;
+  margin-bottom: 1 em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 40px;
+}
+.text var {
+  font-style: italic;
+}

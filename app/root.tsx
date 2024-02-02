@@ -74,6 +74,7 @@ export async function loader({context}: LoaderFunctionArgs) {
   const customerAccessToken = await session.get('customerAccessToken');
   const publicStoreDomain = context.env.PUBLIC_STORE_DOMAIN;
   const language = storefront.i18n;
+  
   // validate the customer access token is valid
   const {isLoggedIn, headers} = await validateCustomerAccessToken(
     session,

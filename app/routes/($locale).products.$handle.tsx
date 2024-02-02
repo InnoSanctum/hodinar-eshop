@@ -26,6 +26,7 @@ import type {
   SelectedOption,
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl, useLanguage} from '~/utils';
+import "../styles/normalize.css"
 
 import LightGallery from 'lightgallery/react';
 
@@ -55,18 +56,6 @@ import {
 import Button from '~/components/Button';
 import {RecommendedProducts} from './($locale)._index';
 import VojtikLink from '~/components/custom/VojtikLink';
-import {
-  MediaPlayer,
-  MediaProvider,
-  type MediaPlayerProps,
-} from '@vidstack/react';
-import {
-  DefaultAudioLayout,
-  defaultLayoutIcons,
-  DefaultVideoLayout,
-} from '@vidstack/react/player/layouts/default';
-import '@vidstack/react/player/styles/base.css';
-import {PlayIcon} from '@vidstack/react/icons';
 import ReactPlayer from 'react-player/lazy';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
@@ -258,16 +247,6 @@ function ProductVideo({image}: {image: ProductVariantFragment['image']}) {
           height="360"
           controls
         />
-        {/* xddd
-        <video>
-          <source src={image?.node?.sources[0].url} type="video/mp4" />
-        </video> */}
-        {/* <MediaPlayer src={image?.node?.sources[0].url} >
-          <MediaProvider />
-          <DefaultAudioLayout icons={defaultLayoutIcons} />
-          <DefaultVideoLayout icons={defaultLayoutIcons} />
-          <PlayIcon size={40} />
-        </MediaPlayer> */}
       </div>
     );
   return null;
@@ -338,7 +317,7 @@ function ProductMain({
         <strong>{language.description}</strong>
       </h4>
       <br />
-      <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+      <div className='text' dangerouslySetInnerHTML={{__html: descriptionHtml}} />
       <br />
     </div>
   );

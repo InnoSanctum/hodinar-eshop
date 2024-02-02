@@ -1,5 +1,6 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, type MetaFunction} from '@remix-run/react';
+import "../styles/normalize.css"
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `ATELIÉR PRYIMAK | ${data?.page.title ?? ''}`}];
@@ -31,7 +32,7 @@ export default function Page() {
       <header>
         <h1>{page.title}</h1>
       </header>
-      <main dangerouslySetInnerHTML={{__html: page.body}} />
+      <main className='text' dangerouslySetInnerHTML={{__html: page.body}} />
     </div>
   );
 }

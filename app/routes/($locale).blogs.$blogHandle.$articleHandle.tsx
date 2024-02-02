@@ -1,5 +1,6 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, type MetaFunction} from '@remix-run/react';
+import "../styles/normalize.css"
 import {Image} from '@shopify/hydrogen';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
@@ -48,7 +49,7 @@ export default function Article() {
       {image && <Image data={image} sizes="90vw" loading="eager" />}
       <div
         dangerouslySetInnerHTML={{__html: contentHtml}}
-        className="article"
+        className="article text"
       />
     </div>
   );
