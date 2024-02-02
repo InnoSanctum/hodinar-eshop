@@ -235,10 +235,8 @@ export function usePrefixPathWithLocale(path: string): string {
 export function getLocaleFromRequest(request: Request): I18nLocale {
   const url = new URL(request.url);
   const firstPathPart = url.pathname.split('/')[1]?.toUpperCase() ?? '';
-  console.log('firstPathPart', firstPathPart);
-
   for (let i = 0; i < languages.length; i++) {
-    if (firstPathPart === languages[i].language) return languages[i];
+    if (firstPathPart === languages[i].pathPrefix.toUpperCase().replace("/","")) return languages[i];
   }
   return languages[0];
 }

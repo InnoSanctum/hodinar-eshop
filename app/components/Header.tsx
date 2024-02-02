@@ -1,5 +1,5 @@
 import {Await, useMatches} from '@remix-run/react';
-import {Suspense, useContext} from 'react';
+import {Suspense, useContext, useEffect, useState} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
@@ -12,9 +12,13 @@ import {VojtikContext} from './custom/VojtikContext';
 import VojtikNavLink from './custom/VojtikNavLink';
 // import '/node_modules/flag-icons/css/flag-icons.min.css';
 // import "../styles/flags.css";
-import EN from '../../public/assets/flags/4x3/cz.svg';
-import CS from '../../public/assets/flags/4x3/us.svg';
+import CZ from '../../public/assets/flags/4x3/cz.svg';
+import EN from '../../public/assets/flags/4x3/us.svg';
+import EU from '../../public/assets/flags/4x3/eu.svg';
 import {useLanguage} from '~/utils';
+import arrow from '../../public/assets/svgs/arrowBlack.svg';
+import Button from './Button';
+import clsx from 'clsx';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
 
@@ -28,8 +32,28 @@ export const languages: I18nLocale[] = [
   },
   {
     country: 'US',
+    language: 'CS',
+    pathPrefix: '/cz-UDS',
+  },
+  {
+    country: 'FR',
+    language: 'CS',
+    pathPrefix: '/cz-EUR',
+  },
+  {
+    country: 'US',
     language: 'EN',
-    pathPrefix: '/en',
+    pathPrefix: '/en-US',
+  },
+  {
+    country: 'CZ',
+    language: 'EN',
+    pathPrefix: '/en-CZK',
+  },
+  {
+    country: 'FR',
+    language: 'EN',
+    pathPrefix: '/en-EUR',
   },
 ];
 
@@ -40,7 +64,124 @@ function LanguagesList({
   languages: I18nLocale[];
   activeLanguage: I18nLocale;
 }) {
-  const flags = {CS, EN};
+  const [isOpen, setOpenState] = useState(false); // const flags = {CS, EN};
+  const [selectedLanguage, setLanguage] = useState<string>(
+    activeLanguage.language,
+  );
+  const [selectedCurrency, setCurrency] = useState<string>(
+    activeLanguage.country,
+  );
+  const [url, setUrl] = useState('');
+  function findUrl() {
+    for (let i = 0; i < languages.length; i++) {
+      const language = languages[i];
+      if (
+        language.country === selectedCurrency &&
+        language.language === selectedLanguage
+      )
+        return language.pathPrefix;
+    }
+    return '';
+  }
+  useEffect(() => {
+    console.log(findUrl());
+    setUrl(findUrl());
+  }, [selectedLanguage, selectedCurrency]);
+
+  const languageList = {
+    EN: {
+      name: 'English',
+      icon: EN,
+    },
+    CS: {
+      name: 'Čeština',
+      icon: CZ,
+    },
+  };
+  const currencyList = {
+    CZ: {
+      name: 'CZK',
+      icon: CZ,
+    },
+    FR: {
+      name: 'EUR',
+      icon: EU,
+    },
+    US: {
+      name: 'USD',
+      icon: EN,
+    },
+  };
+
+  return (
+    <div className="relative">
+      <span
+        onClick={() => setOpenState(!isOpen)}
+        className="flex gap-2 items-center bg-secondary text-primary p-2 py-1 rounded-md cursor-pointer"
+      >
+        <img className="h-4" src={languageList[activeLanguage.language].icon} />
+        {languageList[activeLanguage.language].name} |{' '}
+        {currencyList[activeLanguage.country].name}
+        <img
+          style={{transform: `rotate(${isOpen ? -90 : 90}deg)`}}
+          className="h-4 transition-all"
+          src={arrow}
+        />
+      </span>
+      {isOpen && (
+        <div
+          className="fixed top-0 left-0 w-full h-screen"
+          onClick={() => setOpenState(false)}
+        ></div>
+      )}
+      {isOpen && (
+        <div className=" bg-secondary text-primary p-2 py-1 rounded-md absolute translate-y-4 flex flex-col gap-2">
+          <div>
+            <h4>Language</h4>
+            <span className="flex gap-4">
+              {Object.keys(languageList).map((key, index) => {
+                return (
+                  <span
+                    className={clsx(
+                      'cursor-pointer transition-all',
+                      selectedLanguage === key && 'scale-125 drop-shadow-lg',
+                    )}
+                    key={index}
+                    onClick={() => setLanguage(key)}
+                    key={index}
+                  >
+                    <img className="h-5" src={languageList[key].icon} />
+                  </span>
+                );
+              })}
+            </span>
+          </div>
+          <div>
+            <h4>Currency</h4>
+            <span className="flex gap-4">
+              {Object.keys(currencyList).map((key, index) => {
+                return (
+                  <span
+                    className={clsx(
+                      'cursor-pointer transition-all',
+                      selectedCurrency === key && 'scale-125 drop-shadow-lg',
+                    )}
+                    key={index}
+                    onClick={() => setCurrency(key)}
+                  >
+                    <img className="h-5" src={currencyList[key].icon} />
+                  </span>
+                );
+              })}
+            </span>
+          </div>
+          <a href={url} className="p-2 py-1 rounded-md bg-tertiary m-auto">
+            Apply
+          </a>
+        </div>
+      )}
+    </div>
+  );
   return (
     <div className="flex gap-4 flex-wrap">
       {languages.map((language) => {
