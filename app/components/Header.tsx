@@ -120,7 +120,7 @@ function LanguagesList({
         className="flex gap-2 items-center bg-secondary text-primary p-2 py-1 rounded-md cursor-pointer"
       >
         <img className="h-4" src={languageList[activeLanguage.language].icon} />
-        {languageList[activeLanguage.language].name} |{' '}
+        <span className='hidden xl:inline'>{languageList[activeLanguage.language].name}</span> |{' '}
         {currencyList[activeLanguage.country].name}
         <img
           style={{transform: `rotate(${isOpen ? -90 : 90}deg)`}}
