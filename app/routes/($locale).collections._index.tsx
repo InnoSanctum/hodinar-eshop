@@ -15,7 +15,7 @@ import arrow from '../../public/assets/svgs/arrow.svg';
 
 export async function loader({context, request}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 100,
+    pageBy: 200,
   });
   const {products} = await context.storefront.query(PRODUCTS_QUERY);
 

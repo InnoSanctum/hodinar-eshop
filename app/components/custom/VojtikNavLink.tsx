@@ -11,7 +11,7 @@ export default function VojtikNavLink(
   return (
     <NavLink
       {...props}
-      to={props.to && `${/* context.language.pathPrefix */""}${props.to}`}
+      to={props.to && `${context.language.pathPrefix}${props.to}`}
     >
       {props.children}
     </NavLink>

@@ -269,7 +269,7 @@ export function HeaderMenu({
           item.url.includes('myshopify.com') ||
           item.url.includes(publicStoreDomain) ||
           item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
+            ? new URL(item.url).pathname.replace("/en","")
             : item.url;
         return (
           <VojtikNavLink
