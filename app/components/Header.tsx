@@ -28,7 +28,7 @@ export const languages: I18nLocale[] = [
   {
     country: 'CZ',
     language: 'CS',
-    pathPrefix: '/',
+    pathPrefix: '',
   },
   {
     country: 'US',
@@ -177,7 +177,7 @@ function LanguagesList({
               })}
             </span>
           </div>
-          <a href={url} className="p-2 py-1 rounded-md bg-tertiary m-auto">
+          <a href={url || '/'} className="p-2 py-1 rounded-md bg-tertiary m-auto">
             {languageText.buttons.apply}
           </a>
         </div>
