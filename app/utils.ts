@@ -78,7 +78,7 @@ const CS: Language = {
     avaible: 'Skladem',
     sold: 'Prodáno',
   },
-  totals: 'Soušty',
+  totals: 'Součty',
   collections: 'Kolekce',
   subtotal: 'Mezisoučet',
   description: 'Popis',
