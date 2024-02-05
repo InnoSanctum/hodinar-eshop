@@ -43,7 +43,7 @@ export default function Homepage() {
   return (
     <div className="home flex flex-col gap-16">
       <Hero products={data.recommendedProducts} />
-      <FeaturedCollection collection={data.featuredCollection} />
+      {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
