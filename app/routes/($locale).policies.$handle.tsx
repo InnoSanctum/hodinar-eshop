@@ -61,7 +61,7 @@ export default function Policy() {
 }
 
 // NOTE: https://shopify.dev/docs/api/storefront/latest/objects/Shop
-const POLICY_CONTENT_QUERY = `#graphql
+export const POLICY_CONTENT_QUERY = `#graphql
   fragment Policy on ShopPolicy {
     body
     handle

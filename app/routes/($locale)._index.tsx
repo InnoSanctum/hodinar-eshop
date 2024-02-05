@@ -146,7 +146,7 @@ export function RecommendedProducts({
   return (
     <div className="recommended-products">
       <h2>{language.recommended_products}</h2>
-      <Suspense fallback={<Loading/>}>
+      <Suspense fallback={<Loading />}>
         <Await resolve={products}>
           {({products}) => (
             <div className="flex flex-wrap gap-8 justify-center">
@@ -185,7 +185,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
 ` as const;
 
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   fragment RecommendedProduct on Product {
     id
     title
@@ -209,7 +209,8 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 6, sortKey: UPDATED_AT, reverse: true,
+      query: "available_for_sale:true",) {
       nodes {
         ...RecommendedProduct
       }

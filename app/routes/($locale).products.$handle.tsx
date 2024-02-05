@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {ReactElement, Suspense, useState} from 'react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   Await,
@@ -11,6 +11,7 @@ import type {
   ProductFragment,
   ProductVariantsQuery,
   ProductVariantFragment,
+  PolicyFragment,
 } from 'storefrontapi.generated';
 
 import {
@@ -24,6 +25,7 @@ import {
 import type {
   CartLineInput,
   SelectedOption,
+  ShopPolicy,
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl, useLanguage} from '~/utils';
 import '../styles/normalize.css';
@@ -54,10 +56,13 @@ import {
   Autoplay,
 } from 'swiper/modules';
 import Button from '~/components/Button';
-import {RecommendedProducts} from './($locale)._index';
+import {RECOMMENDED_PRODUCTS_QUERY, RecommendedProducts} from './($locale)._index';
 import VojtikLink from '~/components/custom/VojtikLink';
 import ReactPlayer from 'react-player/lazy';
 import delivery from '../../public/assets/svgs/fast-delivery.svg';
+import {POLICY_CONTENT_QUERY} from './($locale).policies.$handle';
+import '../styles/popup.css';
+import close from '../../public/assets/svgs/close.svg';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Ateliér Pryimak | ${data?.product.title ?? ''}`}];
@@ -86,20 +91,21 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {product} = await storefront.query(PRODUCT_QUERY, {
     variables: {handle, selectedOptions},
   });
-  const {collection: recommendedProducts} = await storefront.query(
+  /* const {collection: recommendedProducts} = await storefront.query(
     RECOMMENDED_PRODUCTS_QUERY,
     {
       variables: {handle: product?.collections.edges[0]?.node.handle || ''},
     },
-  );
+  ); */
+  const recommendedProducts =await storefront.query(RECOMMENDED_PRODUCTS_QUERY);
 
   if (!product?.id) {
     throw new Response(null, {status: 404});
   }
-  const filteredRecommendedProducts =
+  /* const filteredRecommendedProducts =
     recommendedProducts?.products.nodes.filter(
       (recommendedProduct) => recommendedProduct.id != product.id,
-    );
+    ); */
 
   // const recommendedRandomProducts = await storefront.query(
   //   RECOMMENDED_RANDOM_PRODUCTS_QUERY,
@@ -132,10 +138,21 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     variables: {handle},
   });
 
+  const policy = await context.storefront.query(POLICY_CONTENT_QUERY, {
+    variables: {
+      privacyPolicy: false,
+      shippingPolicy: true,
+      termsOfService: false,
+      refundPolicy: false,
+      language: context.storefront.i18n?.language,
+    },
+  });
+console.log(recommendedProducts)
   return defer({
     product,
     variants,
-    recommendedProducts: {products: {nodes: filteredRecommendedProducts}},
+    policy,
+    recommendedProducts/* : {products: {nodes: filteredRecommendedProducts}} */,
   });
 }
 
@@ -163,11 +180,10 @@ function redirectToFirstVariant({
 }
 
 export default function Product() {
-  const {product, variants, recommendedProducts} =
+  const {product, variants, recommendedProducts, policy} =
     useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   const size = useWindowSize();
-
   return (
     <div className="flex flex-col gap-8">
       <div className="product">
@@ -227,12 +243,42 @@ export default function Product() {
           selectedVariant={selectedVariant}
           product={product}
           variants={variants}
+          policy={policy.shop.shippingPolicy}
         />
       </div>
       {recommendedProducts?.products?.nodes?.length ? (
         <RecommendedProducts products={recommendedProducts} />
       ) : null}
     </div>
+  );
+}
+
+function Window({
+  children,
+  button,
+}: {
+  children: ReactElement;
+  button: ReactElement;
+}) {
+  const [activated, setActiveState] = useState(false);
+  return (
+    <>
+      <div className="cursor-pointer" onClick={() => setActiveState(true)}>
+        {button}
+      </div>
+      {activated && (
+        <div className="w-screen h-full fixed top-[64px] left-0 backdrop-blur-md flex justify-center items-center z-[999999]">
+          <div className="window bg-secondary text-primary relative z-10 p-4 rounded-md overflow-scroll max-h-full">
+            <div className="text-right ">
+              <button onClick={() => setActiveState(false)}>
+                <img src={close} />
+              </button>
+            </div>
+            <div>{children}</div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -276,12 +322,12 @@ function ProductImage({image}: {image: ProductVariantFragment['image']}) {
 }
 
 function Delivery() {
-  const date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 14);
+  const date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 3);
   const language = useLanguage();
   return (
     <div>
-      <span className="text-lg">1-2 {language.week}</span>
-      <br />
+      {/* <span className="text-lg">1-2 {language.week}</span>
+      <br /> */}
       <span>{language.shipping}:</span>
       <time>
         {' '}
@@ -295,10 +341,12 @@ function ProductMain({
   selectedVariant,
   product,
   variants,
+  policy,
 }: {
   product: ProductFragment;
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Promise<ProductVariantsQuery>;
+  policy: PolicyFragment;
 }) {
   const {title, descriptionHtml} = product;
   const language = useLanguage();
@@ -331,12 +379,33 @@ function ProductMain({
         </Await>
       </Suspense>
       <br />
-      <VojtikLink to={'/policies/shipping-policy'}>
+      <Window
+        button={
+          <span className=" flex flex-wrap gap-3">
+            <img src={delivery} className="h-6" />
+            {language.shippingOptions}
+          </span>
+        }
+      >
+        <div className="text" dangerouslySetInnerHTML={{__html: policy.body}} />
+      </Window>
+      {/* <Popup
+        trigger={
+          <span className=" flex flex-wrap gap-3">
+            <img src={delivery} className="h-6" />
+            {language.shippingOptions}
+          </span>
+        }
+        position="center center"
+      >
+        <div className="text" dangerouslySetInnerHTML={{__html: policy.body}} />
+      </Popup> */}
+      {/* <VojtikLink to={'/policies/shipping-policy'}>
         <span className=" flex flex-wrap gap-3">
           <img src={delivery} className="h-6" />
           {language.shippingOptions}
         </span>
-      </VojtikLink>
+      </VojtikLink> */}
       <br />
       <h4>
         <strong>{language.description}</strong>
@@ -628,7 +697,7 @@ const VARIANTS_QUERY = `#graphql
   }
 ` as const;
 
-const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+/* const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   fragment RecommendedProductCollection on Product {
     id
     title
@@ -661,4 +730,4 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       }
     }
   }
-` as const;
+` as const; */
