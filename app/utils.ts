@@ -101,7 +101,16 @@ const CS: Language = {
   currency: 'Měna',
   language: 'Jazyk',
   shipping: 'Můžeme doručit do',
-  week: 'Týdny',shippingOptions:"Možnosti doručení"
+  week: 'Týdny',
+  shippingOptions: 'Možnosti doručení',
+  policies: {
+    backTo: 'Zpátky na',
+    consent: {
+      text1: 'Dokončením objednávky souhlasíte s našimi',
+      text2: 'obchodními podmínkami',
+    },
+    policies: 'Obchodní podmínky',
+  },
 };
 const EN: Language = {
   buttons: {
@@ -156,6 +165,14 @@ const EN: Language = {
   week: 'Weeks',
   shipping: 'We can deliver by',
   shippingOptions: 'Delivery options',
+  policies: {
+    backTo: 'Back to',
+    consent: {
+      text1: 'By completing the order, you agree to our',
+      text2: 'terms and conditions',
+    },
+    policies: 'Terms and conditions',
+  },
 };
 
 export function useLanguage(/* language:I18nLocale */): Language {
@@ -182,6 +199,7 @@ export function useLanguage(/* language:I18nLocale */): Language {
 export interface Language {
   buttons: Buttons;
   cart: Cart;
+  policies: Policies;
   filters: Filters;
   totals: string;
   subtotal: string;
@@ -236,6 +254,15 @@ interface Filters {
   filter: string;
   avaible: string;
   sold: string;
+}
+
+interface Policies {
+  consent: {
+    text1: string;
+    text2: string;
+  };
+  policies: string;
+  backTo: string;
 }
 
 export function usePrefixPathWithLocale(path: string): string {

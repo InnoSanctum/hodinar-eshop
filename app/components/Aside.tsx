@@ -26,7 +26,7 @@ export function Aside({
           window.location.hash = '';
         }}
       />
-      <aside className=" bg-primary/50  backdrop-blur-2xl">
+      <aside className=" bg-primary/50 backdrop-blur-2xl">
         <header className="border-b border-b-secondary">
           <h3>{heading}</h3>
           <CloseAside />

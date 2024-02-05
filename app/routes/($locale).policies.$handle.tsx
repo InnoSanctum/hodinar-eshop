@@ -2,6 +2,7 @@ import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {type Shop} from '@shopify/hydrogen/storefront-api-types';
 import VojtikLink from '~/components/custom/VojtikLink';
+import { useLanguage } from '~/utils';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -44,17 +45,17 @@ export async function loader({params, context}: LoaderFunctionArgs) {
 
 export default function Policy() {
   const {policy} = useLoaderData<typeof loader>();
-
+  const language =useLanguage()
   return (
     <div className="policy">
       <br />
       <br />
       <div>
-        <VojtikLink to="/policies">← Back to Policies</VojtikLink>
+        <VojtikLink to="/policies">← {language.policies.backTo} {language.policies.policies}</VojtikLink>
       </div>
       <br />
       <h1>{policy.title}</h1>
-      <div dangerouslySetInnerHTML={{__html: policy.body}} />
+      <div className='text' dangerouslySetInnerHTML={{__html: policy.body}} />
     </div>
   );
 }

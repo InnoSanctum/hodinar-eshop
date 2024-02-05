@@ -5,6 +5,7 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useLanguage, useVariantUrl} from '~/utils';
 import VojtikLink from './custom/VojtikLink';
 import {useState} from 'react';
+import Button from './Button';
 
 type CartLine = CartApiQueryFragment['lines']['nodes'][0];
 
@@ -28,11 +29,23 @@ export function CartMain({layout, cart}: CartMainProps) {
   );
 }
 
-function Consent({setAgreed}: {setAgreed: () => boolean}) {
+function Consent({
+  setAgreed,
+}: {
+  setAgreed: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const language = useLanguage();
   return (
-    <p>
-      Dokončením objednávky souhlasíte s našimi{' '}
-      <VojtikLink to={'/policies'}>obchodními podmínkami</VojtikLink>.
+    <p className="my-4">
+      {language.policies.consent.text1}{' '}
+      <VojtikLink
+        to={'/policies'}
+        className="underline"
+        onClick={(e) => (location.href = new URL(e.target.href).pathname)}
+      >
+        {language.policies.consent.text2}
+      </VojtikLink>
+      .
     </p>
   );
 }
@@ -46,6 +59,8 @@ function CartDetails({layout, cart}: CartMainProps) {
       {cartHasItems && (
         <CartSummary cost={cart.cost} layout={layout}>
           <CartDiscounts discountCodes={cart.discountCodes} />
+          <Consent setAgreed={setAgreed} />
+
           <CartCheckoutActions agreed={agreed} checkoutUrl={cart.checkoutUrl} />
         </CartSummary>
       )}
@@ -140,7 +155,10 @@ function CartCheckoutActions({
   return (
     <div>
       <a href={checkoutUrl} target="_self">
-        <p>{language.cart.checkout} &rarr;</p>
+        <Button className="absolute">
+          {' '}
+          <p>{language.cart.checkout} &rarr;</p>
+        </Button>
       </a>
       <br />
     </div>

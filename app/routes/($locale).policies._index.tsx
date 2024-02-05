@@ -1,6 +1,7 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, Link} from '@remix-run/react';
 import VojtikLink from '~/components/custom/VojtikLink';
+import { useLanguage } from '~/utils';
 
 export async function loader({context}: LoaderFunctionArgs) {
   const data = await context.storefront.query(POLICIES_QUERY);
@@ -15,10 +16,11 @@ export async function loader({context}: LoaderFunctionArgs) {
 
 export default function Policies() {
   const {policies} = useLoaderData<typeof loader>();
+  const language =useLanguage()
 
   return (
     <div className="policies">
-      <h1>Policies</h1>
+      <h1>{language.policies.policies}</h1>
       <div>
         {policies.map((policy) => {
           if (!policy) return null;

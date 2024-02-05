@@ -316,7 +316,7 @@ function ProductMain({
           />
         }
       >
-        <Delivery />
+        {/* <Delivery /> */}
         <Await
           errorElement="There was a problem loading product variants"
           resolve={variants}
