@@ -39,7 +39,7 @@ function Consent({
     <p className="my-4">
       {language.policies.consent.text1}{' '}
       <VojtikLink
-        to={'/policies'}
+        to={'/pages/obchodni-podminky'}
         className="underline"
         onClick={(e) => (location.href = new URL(e.target.href).pathname)}
       >
