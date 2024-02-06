@@ -197,6 +197,12 @@ export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
         currencyCode 
       }
     }
+    collections(first: 10) {  # Přidáno pole pro kategorie
+    nodes {
+      id
+      title
+      handle
+    }}
     images(first: 2) {
       nodes {
         id

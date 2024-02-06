@@ -18,14 +18,24 @@ export async function loader({context, request}: LoaderFunctionArgs) {
     pageBy: 200,
   });
   const {products} = await context.storefront.query(PRODUCTS_QUERY);
-
-  const {collections} = await context.storefront.query(COLLECTIONS_QUERY, {
+  /* const {collections} = await context.storefront.query(COLLECTIONS_QUERY, {
     variables: paginationVariables,
-  });
+  }); */
   const url = new URL(request.url);
   const data = url.searchParams.get('filters');
   const filtersUrl: Filter | null = data && JSON.parse(data);
-  return json({collections, products, filtersUrl, href: url.href});
+  return json({
+    products: {
+      nodes: products.nodes.filter(
+        (product) =>
+          !product.collections.nodes.find(
+            (collection) => collection.title === 'Řemínky',
+          ),
+      ),
+    },
+    filtersUrl,
+    href: url.href,
+  });
 }
 
 interface Filter {
@@ -36,8 +46,7 @@ interface Filter {
 }
 
 export default function Collections() {
-  const {collections, products, filtersUrl, href} =
-    useLoaderData<typeof loader>();
+  const {products, filtersUrl, href} = useLoaderData<typeof loader>();
   const [filters, setFilters] = useState<Filter>(
     /* {
       price: {from: undefined, to: undefined},
@@ -68,7 +77,6 @@ export default function Collections() {
       <div className="flex flex-col lg:flex-row">
         <Filters
           filters={filters}
-          collections={collections.nodes}
           products={products.nodes}
           setFilters={setFilters}
         />
@@ -84,6 +92,7 @@ function ProductsGrid({
   products: ProductsListFragment[];
   filters: Filter;
 }) {
+  // products.filter(product=>product.collections.nodes.find(collection=>collection.title==="Řemínky"))
   const filteredArray = (array1: any[], array2: any[]) =>
     array1.filter((value) => array2.includes(value));
   return (
@@ -102,18 +111,16 @@ function ProductsGrid({
               return null;
           if (filters.style && filters.style.length)
             if (
-              !filteredArray(
-                filters.style,
-                product.collections.nodes.map((e) => e.handle),
-              ).length
+              !filters.style.find(
+                (style) => style === product.metafields[0]?.value,
+              )
             )
               return null;
           if (filters.brand && filters.brand.length)
             if (
-              !filteredArray(
-                filters.brand,
-                product.collections.nodes.map((e) => e.handle),
-              ).length
+              !filters.brand.find(
+                (style) => style === product.metafields[1]?.value,
+              )
             )
               return null;
           if (filters.availability !== undefined)
@@ -180,20 +187,32 @@ function FilterSection({
 function Filters({
   setFilters,
   products,
-  collections,
   filters,
 }: {
   filters: Filter;
   setFilters: (props: Filter) => void;
   products: ProductsListFragment[];
-  collections: CollectionFragment[];
 }) {
-  const brands = collections.filter((collection) =>
-    parseBrand(collection.title),
-  );
-  const styles = collections.filter(
-    (collection) => !parseBrand(collection.title),
-  );
+  // const brands = collections.filter((collection) =>
+  //   parseBrand(collection.title),
+  // );
+  // const styles = collections.filter(
+  //   (collection) => !parseBrand(collection.title),
+  // );
+  const styles = [
+    ...new Set(
+      products
+        .map((product) => product.metafields[0])
+        .filter((products) => products?.value),
+    ),
+  ];
+  const brands = [
+    ...new Set(
+      products
+        .map((product) => product.metafields[1])
+        .filter((products) => products?.value),
+    ),
+  ];
   function setAvailability(availability: boolean): void {
     filters.availability =
       filters.availability === availability ? undefined : availability;
@@ -296,14 +315,14 @@ function Filters({
                 return (
                   <span key={index}>
                     <input
-                      onChange={() => setStyle(style.handle)}
-                      id={style.handle}
+                      onChange={() => setStyle(style?.value)}
+                      id={style?.value}
                       type="checkbox"
-                      checked={filters.style?.includes(style.handle)}
+                      checked={filters.style?.includes(style?.value)}
                       className="w-4 h-4 rounded focus:ring-blue-500focus:ring-2border-gray-600"
                     />
-                    <label htmlFor={style.handle} className="ms-2 font-medium">
-                      {style.title}
+                    <label htmlFor={style?.value} className="ms-2 font-medium">
+                      {style?.value}
                     </label>
                   </span>
                 );
@@ -345,14 +364,14 @@ function Filters({
                 return (
                   <span key={index}>
                     <input
-                      onChange={() => setBrand(brand.handle)}
-                      id={brand.handle}
+                      onChange={() => setBrand(brand?.value)}
+                      id={brand?.value}
                       type="checkbox"
-                      checked={filters.brand?.includes(brand.handle)}
+                      checked={filters.brand?.includes(brand?.value)}
                       className="w-4 h-4 rounded focus:ring-blue-500focus:ring-2border-gray-600"
                     />
-                    <label htmlFor={brand.handle} className="ms-2 font-medium">
-                      {parseBrand(brand.title)}
+                    <label htmlFor={brand?.value} className="ms-2 font-medium">
+                      {brand?.value}
                     </label>
                   </span>
                 );
@@ -410,6 +429,12 @@ function CollectionItem({
 const PRODUCTS_QUERY = `#graphql
   fragment ProductsList on Product {
     id
+    metafields(identifiers: [{namespace: "custom", key: "styl"}, {namespace: "custom", key: "strojek"}]) {
+          id
+          namespace
+          key
+          value
+    }
     title
     description
     handle
@@ -472,7 +497,7 @@ const COLLECTIONS_QUERY = `#graphql
       first: $first,
       last: $last,
       before: $startCursor,
-      after: $endCursor
+      after: $endCursor,
     ) {
       nodes {
         ...Collection
