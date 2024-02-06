@@ -199,20 +199,21 @@ function Filters({
   // const styles = collections.filter(
   //   (collection) => !parseBrand(collection.title),
   // );
-  const styles = [
-    ...new Set(
-      products
-        .map((product) => product.metafields[0])
-        .filter((products) => products?.value),
-    ),
-  ];
-  const brands = [
-    ...new Set(
-      products
-        .map((product) => product.metafields[1])
-        .filter((products) => products?.value),
-    ),
-  ];
+  const uniqueArray = (a: any[]) =>
+    a.filter(
+      (value, index, self) =>
+        index === self.findIndex((t) => t.value.toUpperCase() === value.value.toUpperCase()),
+    );
+  const styles = uniqueArray(
+    products
+      .map((product) => product.metafields[0])
+      .filter((products) => products?.value),
+  );
+  const brands = uniqueArray(
+    products
+      .map((product) => product.metafields[1])
+      .filter((products) => products?.value),
+  );
   function setAvailability(availability: boolean): void {
     filters.availability =
       filters.availability === availability ? undefined : availability;
