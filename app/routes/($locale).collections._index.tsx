@@ -465,7 +465,7 @@ const PRODUCTS_QUERY = `#graphql
   }
   query ProductsList ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 200, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 200, sortKey: UPDATED_AT, reverse: true,) {
       nodes {
         ...ProductsList
       }
