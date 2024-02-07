@@ -77,7 +77,7 @@ function FooterMenu({
           item.url.includes('myshopify.com') ||
           item.url.includes(publicStoreDomain) ||
           item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
+            ? new URL(item.url).pathname.replace("/en","")
             : item.url;
         const isExternal = !url.startsWith('/');
         return isExternal ? (
