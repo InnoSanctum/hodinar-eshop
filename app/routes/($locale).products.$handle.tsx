@@ -608,7 +608,7 @@ const PRODUCT_FRAGMENT = `#graphql
       }
     }
     
-    media(first: 10) {
+    media(first: 100) {
       edges {
         node { 
           mediaContentType
