@@ -458,6 +458,31 @@ aside li {
   }
 }
 
+.collection-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.pagination-link {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--color-light);
+  border-radius: 999px;
+  color: var(--color-light);
+  display: inline-flex;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  text-decoration: none;
+  transition: background 150ms ease-in-out, color 150ms ease-in-out;
+}
+
+.pagination-link:hover {
+  background: var(--color-light);
+  color: var(--color-dark);
+  text-decoration: none;
+}
+
 .products-grid {
   display: grid;
   grid-gap: 1.5rem;

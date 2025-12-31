@@ -49,7 +49,8 @@ export default function Collection() {
       <Pagination connection={collection.products}>
         {({nodes, isLoading, PreviousLink, NextLink}) => (
           <>
-            <PreviousLink>
+            <div className="collection-pagination">
+              <PreviousLink className="pagination-link">
               {isLoading ? (
                 <Loading />
               ) : (
@@ -57,10 +58,11 @@ export default function Collection() {
                   ↑ {language.load} {language.buttons.previous}
                 </span>
               )}
-            </PreviousLink>
+              </PreviousLink>
+            </div>
             <ProductsGrid products={nodes} />
-            <br />
-            <NextLink>
+            <div className="collection-pagination">
+              <NextLink className="pagination-link">
               {isLoading ? (
                 <Loading />
               ) : (
@@ -68,7 +70,8 @@ export default function Collection() {
                   {language.load} {language.buttons.more} ↓
                 </span>
               )}
-            </NextLink>
+              </NextLink>
+            </div>
           </>
         )}
       </Pagination>
